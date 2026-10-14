@@ -185,6 +185,7 @@ main{max-width:40rem;margin:0 auto;padding-inline:16px;padding-block:1rem 5rem}
 .hero .ayah-h{font-family:var(--f-text);font-size:1.3rem;color:var(--green);font-weight:700;margin-top:.3rem}
 .hero .ayah-h small{font-family:var(--f-ui);font-size:.75rem;color:var(--muted);font-weight:400}
 .chip.add{border-style:dashed;color:var(--green);border-color:color-mix(in srgb,var(--green) 50%,transparent)}
+.chip .pc{display:inline-block;min-width:1.4em;margin-inline-end:.35rem;padding:0 .3rem;border-radius:999px;font-size:.72rem;background:color-mix(in srgb,currentColor 16%,transparent)}
 .chip .x{display:inline-grid;place-items:center;width:1.2rem;height:1.2rem;border-radius:50%;margin-inline-start:.35rem;font-size:.85rem;line-height:1;background:color-mix(in srgb,currentColor 18%,transparent)}
 .addf{display:flex;flex-wrap:wrap;gap:.5rem;width:100%;max-width:26rem;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:.7rem}
 .addf input{flex:1 1 12rem;min-width:0;border:1px solid var(--line);border-radius:10px;padding:.55rem .7rem;font:inherit;font-family:var(--f-text);font-size:1.1rem;background:var(--paper);color:var(--ink)}
@@ -543,6 +544,12 @@ function search(){
 }
 const PHR = ['سبحان الله','الحمد لله','لا إله إلا الله','الله أكبر','سبحان الله وبحمده','أستغفر الله وأتوب إليه','لا حول ولا قوة إلا بالله','اللهم صلِّ وسلم على نبينا محمد'];
 const allPhr = () => PHR.concat(ST.tsb.custom || []);
+/* each phrase keeps its own count; switching never resets */
+function tsbSwitch(i){
+  const T = ST.tsb, L = allPhr(); T.cnt = T.cnt || {};
+  if (L[T.i] !== undefined) T.cnt[L[T.i]] = T.n;
+  T.i = i; T.n = T.cnt[L[i]] || 0;
+}
 /* the absolute adhkar (part one of the book), offered when adding to the tasbih */
 const ABS_PART = (DATA.find(s => s.kind === 'part' && s.title.startsWith('الباب الأول')) || {}).id;
 const cleanDhikr = x => plain(x).replace(/[ۖ-ۜ]/g, '').replace(/\s+/g, ' ').trim();
@@ -560,7 +567,7 @@ function tasbih(adding){
   if (!(T.i < L.length)) T.i = 0;
   const pct = T.goal ? Math.min(1, T.n / T.goal) : 0;
   view.innerHTML = `<div class="tsb">
-    <div class="chips">${L.map((p, i) => `<button class="chip${i === T.i ? ' on' : ''}" data-ph="${i}">${esc(p)}${i >= PHR.length ? `<span class="x" data-act="tsb-del" data-i="${i - PHR.length}" role="button" aria-label="حذف هذا الذكر">×</span>` : ''}</button>`).join('')}
+    <div class="chips">${L.map((p, i) => { const c = i === T.i ? T.n : (T.cnt || {})[p] || 0; return `<button class="chip${i === T.i ? ' on' : ''}" data-ph="${i}">${c ? `<span class="pc">${AR(c)}</span>` : ''}${esc(p)}${i >= PHR.length ? `<span class="x" data-act="tsb-del" data-i="${i - PHR.length}" role="button" aria-label="حذف هذا الذكر">×</span>` : ''}</button>`; }).join('')}
       <button class="chip add" data-act="tsb-add-open">+ أضف ذكرًا</button></div>
     ${adding ? `<form class="addf" id="addf"><div class="or">اختر من الأذكار المطلقة في الكتاب:</div>${absList()}<div class="or">أو اكتب ذكرًا من عندك:</div><input id="newdhikr" maxlength="200" placeholder="مثل: حسبي الله ونعم الوكيل" autocomplete="off"><div class="btns"><button class="ok" type="submit">إضافة</button><button class="no" type="button" data-act="tsb-add-cancel">إلغاء</button></div></form>` : ''}
     <div class="phrase${L[T.i].length > 45 ? ' long' : ''}">${esc(L[T.i])}</div>
@@ -579,7 +586,7 @@ document.addEventListener('submit', e => {
   const v = document.getElementById('newdhikr').value.trim().replace(/\s+/g, ' ');
   if (!v) { document.getElementById('newdhikr').focus(); return; }
   ST.tsb.custom = (ST.tsb.custom || []).concat(v);
-  ST.tsb.i = allPhr().length - 1; ST.tsb.n = 0; save(); tasbih(); toast('أُضيف الذكر');
+  tsbSwitch(allPhr().length - 1); save(); tasbih(); toast('أُضيف الذكر');
 });
 
 /* prayer times — astronomical calculation on the device (no network) */
@@ -851,7 +858,7 @@ document.addEventListener('click', e => {
     if (act === 'unhide-secs') { ST.hidSec = []; save(); settings(); toast('أُعيدت كل الأقسام'); return; }
     if (act === 'unhide-every') { ST.hidden = []; save(); settings(); toast('أُعيدت كل الأذكار المخفية'); return; }
     if (act === 'reset-ch') { counted(BY[view.dataset.sec]).forEach(i => delete ST.done[i.n]); save(); chapter(view.dataset.sec); }
-    else if (act === 'tsb-reset') { ST.tsb.n = 0; save(); tasbih(); }
+    else if (act === 'tsb-reset') { ST.tsb.n = 0; ST.tsb.cnt = ST.tsb.cnt || {}; ST.tsb.cnt[allPhr()[ST.tsb.i]] = 0; save(); tasbih(); }
     else if (act === 'pick') picker();
     else if (act === 'loc') locSheet();
     else if (act === 'geo') locate();
@@ -864,8 +871,10 @@ document.addEventListener('click', e => {
     else if (act === 'tsb-add-cancel') tasbih();
     else if (act === 'tsb-del') {
       const k = +a.dataset.i, idx = PHR.length + k;
+      const removed = ST.tsb.custom[k];
       ST.tsb.custom.splice(k, 1);
-      if (ST.tsb.i === idx) { ST.tsb.i = 0; ST.tsb.n = 0; } else if (ST.tsb.i > idx) ST.tsb.i--;
+      if (ST.tsb.cnt) delete ST.tsb.cnt[removed];
+      if (ST.tsb.i === idx) { ST.tsb.i = 0; ST.tsb.n = (ST.tsb.cnt || {})[allPhr()[0]] || 0; } else if (ST.tsb.i > idx) ST.tsb.i--;
       save(); tasbih(); toast('حُذف الذكر');
     }
     else if (act === 'close') { $('#sheet').hidden = true; if (!location.hash) home(); }
@@ -884,8 +893,8 @@ document.addEventListener('click', e => {
   const al = e.target.closest('[data-alert]');
   if (al) { const k = al.dataset.alert, A = tsbAlert(); ST.tsb.alert = Object.assign({ vib: A.vib, snd: A.snd }, { [k]: !A[k] }); save(); tasbih(); if (k === 'snd' && ST.tsb.alert.snd) chime(); if (k === 'vib' && ST.tsb.alert.vib) buzz([60, 80, 60]); return; }
   const ad = e.target.closest('[data-adddh]');
-  if (ad) { const t = cleanDhikr(ITEMS[+ad.dataset.adddh].x); ST.tsb.custom = (ST.tsb.custom || []).concat(t); ST.tsb.i = allPhr().length - 1; ST.tsb.n = 0; save(); tasbih(); window.scrollTo(0, 0); toast('أُضيف إلى السُّبحة'); return; }
-  const ph = e.target.closest('[data-ph]'); if (ph) { ST.tsb.i = +ph.dataset.ph; ST.tsb.n = 0; save(); tasbih(); return; }
+  if (ad) { const t = cleanDhikr(ITEMS[+ad.dataset.adddh].x); ST.tsb.custom = (ST.tsb.custom || []).concat(t); tsbSwitch(allPhr().length - 1); save(); tasbih(); window.scrollTo(0, 0); toast('أُضيف إلى السُّبحة'); return; }
+  const ph = e.target.closest('[data-ph]'); if (ph) { if (+ph.dataset.ph !== ST.tsb.i) tsbSwitch(+ph.dataset.ph); save(); tasbih(); return; }
   const gl = e.target.closest('[data-goal]'); if (gl) { ST.tsb.goal = +gl.dataset.goal; save(); tasbih(); return; }
   const pr = e.target.closest('[data-pre]');
   if (pr) { ST.pre = Object.assign(preCfg(), { m: +pr.dataset.pre }); save(); salah(); if (ST.pre.m) toast('سينبّهك قبل الأذان بـ ' + minW(ST.pre.m).replace('دقيقتان', 'دقيقتين')); return; }
