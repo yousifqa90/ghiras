@@ -275,6 +275,36 @@ main{max-width:40rem;margin:0 auto;padding-inline:16px;padding-block:1rem 5rem}
 .geost .chip{margin-top:.4rem;display:inline-block}
 .pr-ask{display:flex;justify-content:center;margin-top:.4rem}
 .meth{width:100%;padding:.55rem .6rem;border:1px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);font:inherit}
+
+/* mushaf */
+.mus{padding-top:.6rem}
+.mus-top{display:flex;align-items:center;justify-content:space-between;gap:.5rem;margin-bottom:.6rem}
+.mus-info{font-family:var(--f-text);color:var(--red);font-size:1.05rem}
+.mus-page{position:relative;background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:.9rem .7rem;color:var(--ink);line-height:1.95;min-height:60vh;overflow:hidden;
+  outline:1px solid color-mix(in srgb,var(--gold) 45%,transparent);outline-offset:-6px;user-select:none;-webkit-user-select:none}
+.mus-page .ml{display:flex;justify-content:space-between;white-space:nowrap;min-height:1.95em;align-items:center}
+.mus-page.center .ml{justify-content:center;gap:.25em}
+.mus-page.measure .ml{display:flex;width:max-content}
+.mus-page .mw{display:inline-block}
+.mus-page .mh{justify-content:center;font-family:var(--f-text);font-size:.62em;color:var(--red);border:1.5px solid color-mix(in srgb,var(--gold) 70%,transparent);border-radius:10px;background:color-mix(in srgb,var(--gold) 10%,transparent);margin:.12em 0}
+.mus-page .mb{justify-content:center;font-family:var(--f-text);font-size:.7em}
+.mus-load{font-family:var(--f-ui);font-size:.9rem;color:var(--muted);text-align:center;padding:3rem 1rem;line-height:2}
+.mus-nav{display:flex;align-items:center;justify-content:space-between;margin:.8rem 0}
+.mus-no{font-family:var(--f-text);font-size:1.15rem;color:var(--red);border:1px solid var(--line);border-radius:999px;padding:.1rem 1rem;background:var(--card)}
+.mus-credit{text-align:center;font-size:.7rem;color:var(--muted);margin:.2rem 0 1rem}
+.mus-tabs{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center}
+.mus-jump{display:flex;gap:.3rem;margin-inline-start:auto}
+.mus-jump input{width:6.5rem;border:1px solid var(--line);border-radius:999px;padding:.35rem .7rem;font:inherit;font-size:16px;background:var(--paper);color:var(--ink)}
+.mus-acts{display:flex;flex-wrap:wrap;gap:.4rem}
+.mus-list{max-height:45vh}
+.mus-row{display:flex;align-items:center;gap:.6rem;width:100%;padding:.55rem .8rem;border-top:1px solid var(--line);text-align:right}
+.mus-row:first-child{border-top:0}
+.mus-row .mn{width:2rem;color:var(--gold);font-size:.85rem}
+.mus-row .mt{flex:1;font-family:var(--f-text);font-size:1.1rem}
+.mus-row .mp{color:var(--muted);font-size:.85rem}
+.mus-dl{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;justify-content:center;text-align:center}
+.mus-prog{width:100%;height:6px;border-radius:3px;background:var(--line);overflow:hidden}
+.mus-prog i{display:block;height:100%;background:var(--green)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
 
@@ -446,7 +476,8 @@ function home(){
              : `<button class="qt" data-go="${s.id}" data-pid="${s.id}">${inner}</button>`;
   });
   h += `<button class="qt" data-go="fav"><b>المفضّلة</b><span>${AR(ST.fav.length)} ذكرًا محفوظًا</span></button>
-        <button class="qt${pins().filter(id => BY[id]).length % 2 ? ' wide' : ''}" data-go="tasbih"><b>السُّبحة</b><span>عدّاد للتسبيح المطلق</span></button></div>
+        <button class="qt" data-go="tasbih"><b>السُّبحة</b><span>عدّاد للتسبيح المطلق</span></button>
+        <button class="qt${pins().filter(id => BY[id]).length % 2 ? '' : ' wide'}" data-go="mushaf"><b>المصحف</b><span>مصحف المدينة، صفحة ${AR(musPage())}</span></button></div>
         <div class="pinbar">${ARR ? `<button class="pinlink done" data-act="arr-done">تمّ الترتيب</button>`
           : `<button class="pinlink" data-act="pick">${ICON.edit} اختر الأقسام</button><button class="pinlink" data-act="arr">⇅ رتّبها</button>`}</div>`;
   let open = false, seenPart = false;
@@ -584,6 +615,7 @@ function tasbih(adding){
 
 }
 document.addEventListener('submit', e => {
+  if (e.target.id === 'mjump') { e.preventDefault(); const v = +String($('#mjp').value).replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)); if (v >= 1 && v <= 604) { $('#sheet').hidden = true; musGo(v); } else toast('اكتب رقمًا من ١ إلى ٦٠٤'); return; }
   if (e.target.id !== 'addf') return;
   e.preventDefault();
   const v = document.getElementById('newdhikr').value.trim().replace(/\s+/g, ' ');
@@ -774,6 +806,147 @@ function locate(){
   } else go();
 }
 
+/* ---------- المصحف: مصحف المدينة النبوية، الطبعة القديمة (١٤٠٥هـ، ٦٠٤ صفحات) ----------
+   Words and line layout come from the Quran.com API (mushaf=2, King Fahd Complex V1 glyphs);
+   each page is drawn with its own King Fahd Complex font, so pages match the printed mushaf.
+   Everything fetched is kept by the service worker, so pages already opened work offline. */
+const MUS = {
+  api: p => `https://api.quran.com/api/v4/verses/by_page/${p}?words=true&per_page=50&mushaf=2&word_fields=code_v1,line_number,page_number,text_uthmani&fields=chapter_id,juz_number,verse_number`,
+  font: p => `https://static.qurancdn.com/fonts/quran_fonts/v1/woff2/p${p}.woff2`,
+  pages: {}, fonts: {}
+};
+const SURAH = ['الفاتحة','البقرة','آل عمران','النساء','المائدة','الأنعام','الأعراف','الأنفال','التوبة','يونس','هود','يوسف','الرعد','إبراهيم','الحجر','النحل','الإسراء','الكهف','مريم','طه','الأنبياء','الحج','المؤمنون','النور','الفرقان','الشعراء','النمل','القصص','العنكبوت','الروم','لقمان','السجدة','الأحزاب','سبأ','فاطر','يس','الصافات','ص','الزمر','غافر','فصلت','الشورى','الزخرف','الدخان','الجاثية','الأحقاف','محمد','الفتح','الحجرات','ق','الذاريات','الطور','النجم','القمر','الرحمن','الواقعة','الحديد','المجادلة','الحشر','الممتحنة','الصف','الجمعة','المنافقون','التغابن','الطلاق','التحريم','الملك','القلم','الحاقة','المعارج','نوح','الجن','المزمل','المدثر','القيامة','الإنسان','المرسلات','النبأ','النازعات','عبس','التكوير','الانفطار','المطففين','الانشقاق','البروج','الطارق','الأعلى','الغاشية','الفجر','البلد','الشمس','الليل','الضحى','الشرح','التين','العلق','القدر','البينة','الزلزلة','العاديات','القارعة','التكاثر','العصر','الهمزة','الفيل','قريش','الماعون','الكوثر','الكافرون','النصر','المسد','الإخلاص','الفلق','الناس'];
+const SURAH_PAGE = [1,2,50,77,106,128,151,177,187,208,221,235,249,255,262,267,282,293,305,312,322,332,342,350,359,367,377,385,396,404,411,415,418,428,434,440,446,453,458,467,477,483,489,496,499,502,507,511,515,518,520,523,526,528,531,534,537,542,545,549,551,553,554,556,558,560,562,564,566,568,570,572,574,575,577,578,580,582,583,585,586,587,587,589,590,591,591,592,593,594,595,595,596,596,597,597,598,598,599,599,600,600,601,601,601,602,602,602,603,603,603,604,604,604];
+const JUZ_PAGE = [1,22,42,62,82,102,121,142,162,182,201,222,242,262,282,302,322,342,362,382,402,422,442,462,482,502,522,542,562,582];
+const BASMALA = 'بِسۡمِ ٱللَّهِ ٱلرَّحۡمَٰنِ ٱلرَّحِيمِ';
+const surahOfPage = p => { let s = 0; SURAH_PAGE.forEach((sp, i) => { if (sp <= p) s = i; }); return s + 1; };
+const juzOfPage = p => { let j = 0; JUZ_PAGE.forEach((jp, i) => { if (jp <= p) j = i; }); return j + 1; };
+const musPage = () => Math.min(604, Math.max(1, (ST.mus && ST.mus.page) || 1));
+
+async function musLoad(p){
+  if (MUS.pages[p]) return MUS.pages[p];
+  const r = await fetch(MUS.api(p));
+  if (!r.ok) throw new Error('api ' + r.status);
+  const j = await r.json();
+  return (MUS.pages[p] = j.verses || []);
+}
+async function musFont(p){
+  if (MUS.fonts[p]) return MUS.fonts[p];
+  const f = new FontFace('qcf' + p, `url(${MUS.font(p)}) format('woff2')`, { display: 'block' });
+  MUS.fonts[p] = f.load().then(ff => { document.fonts.add(ff); return true; }).catch(() => { delete MUS.fonts[p]; return false; });
+  return MUS.fonts[p];
+}
+
+/* lines 1..15 -> words; empty lines become surah headers or the basmala */
+function musLines(p, verses){
+  const L = {}; let lastCh = 0;
+  verses.forEach(v => {
+    const ch = v.chapter_id || +String(v.verse_key).split(':')[0];
+    lastCh = ch;
+    (v.words || []).forEach(w => {
+      const n = w.line_number; if (!n) return;
+      (L[n] = L[n] || { words: [], ch, first: null }).words.push(w);
+      if (v.verse_number === 1 && L[n].first === null) L[n].first = ch;
+    });
+  });
+  const nums = Object.keys(L).map(Number);
+  const maxLine = p <= 2 ? Math.max(...nums) : 15;
+  const out = [];
+  for (let n = 1; n <= maxLine; n++) {
+    if (L[n]) { out.push({ t: 'w', words: L[n].words }); continue; }
+    let k = n; while (k <= maxLine && !L[k]) k++;            /* run of empty lines n..k-1 */
+    const run = k - n;
+    const nextCh = k <= maxLine ? (L[k].first || L[k].ch) : lastCh + 1;
+    const needB = nextCh !== 1 && nextCh !== 9;
+    const kinds = Array(run).fill('e');
+    if (needB && run >= 2) { kinds[run - 1] = 'b'; kinds[run - 2] = 'h'; }
+    else if (needB && run === 1) kinds[0] = n === 1 ? 'b' : 'h';
+    else kinds[run - 1] = 'h';
+    kinds.forEach(t => out.push(t === 'h' ? { t, ch: nextCh } : { t }));
+    n = k - 1;
+  }
+  return out;
+}
+
+function mushaf(){
+  const p = musPage();
+  setBar('المصحف', true);
+  view.innerHTML = `<div class="mus">
+    <div class="mus-top"><button class="chip" data-act="mus-index">☰ الفهرس</button>
+      <span class="mus-info">سورة ${SURAH[surahOfPage(p) - 1]}، الجزء ${AR(juzOfPage(p))}</span></div>
+    <div class="mus-page" id="mpage" dir="rtl"><div class="mus-load">جارٍ تحميل الصفحة…</div></div>
+    <div class="mus-nav"><button class="chip" data-act="mus-next" aria-label="الصفحة التالية">‹ التالية</button>
+      <button class="mus-no" data-act="mus-go">${AR(p)}</button>
+      <button class="chip" data-act="mus-prev" aria-label="الصفحة السابقة">السابقة ›</button></div>
+    <p class="mus-credit">خط مصحف المدينة النبوية · مجمع الملك فهد لطباعة المصحف الشريف · البيانات من Quran.com</p></div>`;
+  window.scrollTo(0, 0);
+  musRender(p);
+}
+async function musRender(p){
+  const box = $('#mpage'); if (!box) return;
+  try {
+    const [verses, fontOk] = await Promise.all([musLoad(p), musFont(p)]);
+    if (musPage() !== p || !$('#mpage')) return;
+    const lines = musLines(p, verses), useFont = fontOk && verses.some(v => (v.words || []).some(w => w.code_v1));
+    box.innerHTML = lines.map(l => l.t === 'w'
+        ? `<div class="ml">${l.words.map(w => `<span class="mw">${useFont ? w.code_v1 : esc(w.text_uthmani || '')}</span>`).join('')}</div>`
+        : l.t === 'h' ? `<div class="ml mh"><span>سورة ${SURAH[l.ch - 1] || ''}</span></div>`
+        : l.t === 'b' ? `<div class="ml mb">${BASMALA}</div>` : `<div class="ml me"></div>`).join('');
+    box.style.fontFamily = useFont ? `qcf${p}, 'Amiri', serif` : `'Amiri', serif`;
+    box.classList.toggle('center', p <= 2);
+    musFit(box);
+    [p + 1, p - 1].filter(x => x >= 1 && x <= 604).forEach(x => { musLoad(x).catch(() => {}); musFont(x); });
+  } catch (e) {
+    box.innerHTML = `<div class="mus-load">تعذّر تحميل الصفحة. تحتاج اتصالًا بالإنترنت أول مرة تُفتح فيها الصفحة، وبعدها تعمل دون إنترنت.<br><button class="chip" data-act="mus-retry">حاول مرة أخرى</button></div>`;
+  }
+}
+/* scale the font so the widest line fills the page width, then justify every line */
+function musFit(box){
+  const cs = getComputedStyle(box), W = box.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight) - 2, ls = [...box.querySelectorAll('.ml:not(.mh):not(.mb):not(.me)')];
+  box.style.fontSize = '40px'; box.classList.add('measure');
+  const max = Math.max(1, ...ls.map(l => l.scrollWidth));
+  const fs = Math.min(44, 40 * W / max);
+  box.classList.remove('measure'); box.style.fontSize = fs.toFixed(2) + 'px';
+}
+addEventListener('resize', () => { const b = $('#mpage'); if (b && b.querySelector('.mw')) musFit(b); });
+function musGo(p){ ST.mus = Object.assign(ST.mus || {}, { page: Math.min(604, Math.max(1, p)) }); save(); if (location.hash === '#mushaf') mushaf(); else go('mushaf'); }
+
+function musIndex(){
+  const sh = $('#sheet'), p = musPage(), mk = (ST.mus && ST.mus.mark) || 0;
+  sh.innerHTML = `<div class="pane" role="dialog" aria-label="فهرس المصحف"><h3>فهرس المصحف</h3>
+    <div class="mus-tabs"><button class="chip on" data-mtab="s">السور</button><button class="chip" data-mtab="j">الأجزاء</button>
+      <form class="mus-jump" id="mjump"><input id="mjp" type="text" inputmode="numeric" maxlength="3" placeholder="رقم الصفحة" autocomplete="off"><button class="chip on" type="submit">اذهب</button></form></div>
+    <div class="mus-acts"><button class="chip" data-act="mus-mark">🔖 ${mk === p ? 'إزالة العلامة' : 'ضع علامة على الصفحة ' + AR(p)}</button>${mk && mk !== p ? `<button class="chip" data-mgo="${mk}">الذهاب إلى العلامة (${AR(mk)})</button>` : ''}</div>
+    <div class="pk mus-list" id="mlist">${musListS()}</div>
+    <div class="mus-dl" id="mdl">${MUS.dl ? '' : `<button class="chip" data-act="mus-dl">⬇️ تنزيل المصحف كاملًا للقراءة دون إنترنت (نحو ٣٠ ميجابايت)</button>`}</div>
+    <button class="chip on" data-act="close" style="align-self:center">إغلاق</button></div>`;
+  sh.hidden = false;
+}
+const musListS = () => SURAH.map((n, i) => `<button class="mus-row" data-mgo="${SURAH_PAGE[i]}"><span class="mn">${AR(i + 1)}</span><span class="mt">${n}</span><span class="mp">${AR(SURAH_PAGE[i])}</span></button>`).join('');
+const musListJ = () => JUZ_PAGE.map((pg, i) => `<button class="mus-row" data-mgo="${pg}"><span class="mn">${AR(i + 1)}</span><span class="mt">الجزء ${AR(i + 1)}، سورة ${SURAH[surahOfPage(pg) - 1]}</span><span class="mp">${AR(pg)}</span></button>`).join('');
+
+async function musDownload(){
+  if (MUS.dl) return; MUS.dl = { n: 0, stop: false };
+  const show = () => { const b = $('#mdl'); if (b) b.innerHTML = `<div class="mus-prog"><i style="width:${MUS.dl.n / 604 * 100}%"></i></div><small>تم تنزيل ${AR(MUS.dl.n)} من ٦٠٤ صفحة</small> <button class="chip" data-act="mus-dl-stop">إيقاف</button>`; };
+  show();
+  for (let p = 1; p <= 604 && !MUS.dl.stop; p++) {
+    try { await Promise.all([fetch(MUS.api(p)), fetch(MUS.font(p), { mode: 'cors' })]); } catch (e) { toast('انقطع الاتصال؛ حاول لاحقًا'); break; }
+    MUS.dl.n = p; if (p % 4 === 0 || p === 604) show();
+  }
+  const done = MUS.dl.n === 604; MUS.dl = null;
+  const b = $('#mdl'); if (b) b.innerHTML = done ? '<small>✅ المصحف محفوظ في جوالك، ويعمل دون إنترنت.</small>' : `<button class="chip" data-act="mus-dl">⬇️ متابعة التنزيل</button>`;
+  if (done) { ST.mus = Object.assign(ST.mus || {}, { offline: true }); save(); }
+}
+
+/* swipe: finger to the right = next page (pages advance leftwards in an Arabic mushaf) */
+let _msx = null;
+document.addEventListener('touchstart', e => { if (location.hash === '#mushaf' && e.target.closest('#mpage') && e.touches.length === 1) _msx = { x: e.touches[0].clientX, y: e.touches[0].clientY }; }, { passive: true });
+document.addEventListener('touchend', e => {
+  if (!_msx) return; const t = e.changedTouches[0], dx = t.clientX - _msx.x, dy = t.clientY - _msx.y; _msx = null;
+  if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) musGo(musPage() + (dx > 0 ? 1 : -1));
+}, { passive: true });
+document.addEventListener('keydown', e => { if (location.hash !== '#mushaf' || !$('#sheet').hidden) return; if (e.key === 'ArrowLeft') musGo(musPage() + 1); if (e.key === 'ArrowRight') musGo(musPage() - 1); });
+
 /* ---------- settings ---------- */
 function settings(){
   const sh = $('#sheet');
@@ -787,7 +960,7 @@ function settings(){
     ${(ST.hidSec || []).length ? `<div class="opt"><label>الأقسام المخفية من القائمة: ${AR(ST.hidSec.length)}</label><button class="chip" data-act="unhide-secs">إظهارها كلها</button></div>` : ''}
     ${(ST.hidden || []).length ? `<div class="opt"><label>الأذكار المخفية: ${AR(ST.hidden.length)}</label><button class="chip" data-act="unhide-every">إظهارها كلها</button></div>` : ''}
     <div id="rz"><button class="danger" data-act="ask-reset">تصفير عدّادات اليوم</button></div>
-    <div class="ver">الإصدار ١٫٢ · بناء ٣٤</div><div class="install"><b>تثبيته على الجوال:</b> افتح هذه الصفحة في متصفح Chrome، ثم من القائمة ⋮ اختر «إضافة إلى الشاشة الرئيسية»، فيظهر بأيقونة كالتطبيق. يُحفظ تقدّمك ومفضّلتك على هذا الجهاز، وتُصفَّر العدّادات تلقائيًا كل يوم.</div>
+    <div class="ver">الإصدار ١٫٢ · بناء ٣٨</div><div class="install"><b>تثبيته على الجوال:</b> افتح هذه الصفحة في متصفح Chrome، ثم من القائمة ⋮ اختر «إضافة إلى الشاشة الرئيسية»، فيظهر بأيقونة كالتطبيق. يُحفظ تقدّمك ومفضّلتك على هذا الجهاز، وتُصفَّر العدّادات تلقائيًا كل يوم.</div>
     <button class="chip" data-act="close" style="align-self:center">إغلاق</button></div>`;
   sh.hidden = false;
 }
@@ -797,7 +970,7 @@ function setBar(t, back){ $('#ttl').textContent = t; $('#back').hidden = !back; 
 function route(){
   const h = location.hash.slice(1);
   view.dataset.sec = '';
-  if (!h) home(); else if (h === 'fav') favs(); else if (h === 'search') search(); else if (h === 'tasbih') tasbih(); else if (h === 'salah') salah();
+  if (!h) home(); else if (h === 'fav') favs(); else if (h === 'search') search(); else if (h === 'tasbih') tasbih(); else if (h === 'salah') salah(); else if (h === 'mushaf') mushaf();
   else if (BY[h]) chapter(h); else home();
 }
 function go(t){ ARR = false; if (location.hash.slice(1) === t) route(); else location.hash = t; }
@@ -863,6 +1036,13 @@ document.addEventListener('click', e => {
     if (act === 'reset-ch') { counted(BY[view.dataset.sec]).forEach(i => delete ST.done[i.n]); save(); chapter(view.dataset.sec); }
     else if (act === 'tsb-reset') { ST.tsb.n = 0; ST.tsb.cnt = ST.tsb.cnt || {}; ST.tsb.cnt[allPhr()[ST.tsb.i]] = 0; save(); tasbih(); }
     else if (act === 'pick') picker();
+    else if (act === 'mus-next') musGo(musPage() + 1);
+    else if (act === 'mus-prev') musGo(musPage() - 1);
+    else if (act === 'mus-retry') musRender(musPage());
+    else if (act === 'mus-index' || act === 'mus-go') musIndex();
+    else if (act === 'mus-dl') musDownload();
+    else if (act === 'mus-dl-stop') { if (MUS.dl) MUS.dl.stop = true; }
+    else if (act === 'mus-mark') { const p = musPage(); ST.mus = Object.assign(ST.mus || {}, { mark: ST.mus && ST.mus.mark === p ? 0 : p }); save(); musIndex(); toast(ST.mus.mark ? 'وُضعت العلامة على الصفحة ' + AR(p) : 'أُزيلت العلامة'); }
     else if (act === 'loc') locSheet();
     else if (act === 'geo') locate();
     else if (act === 'arr') { ARR = true; home(); }
@@ -903,6 +1083,8 @@ document.addEventListener('click', e => {
   if (pr) { ST.pre = Object.assign(preCfg(), { m: +pr.dataset.pre }); save(); salah(); if (ST.pre.m) toast('سينبّهك قبل الأذان بـ ' + minW(ST.pre.m).replace('دقيقتان', 'دقيقتين')); return; }
   const pt = e.target.closest('[data-pret]');
   if (pt) { const k = pt.dataset.pret, P = preCfg(); P[k] = !P[k]; ST.pre = P; save(); salah(); if (P[k]) { if (k === 'snd') chime(); else buzz([150, 100, 150]); } return; }
+  const mg = e.target.closest('[data-mgo]'); if (mg) { $('#sheet').hidden = true; musGo(+mg.dataset.mgo); return; }
+  const mt = e.target.closest('[data-mtab]'); if (mt) { document.querySelectorAll('[data-mtab]').forEach(b => b.classList.toggle('on', b === mt)); $('#mlist').innerHTML = mt.dataset.mtab === 'j' ? musListJ() : musListS(); $('#mlist').scrollTop = 0; return; }
   const ct = e.target.closest('[data-city]');
   if (ct) { const [gi, ci] = ct.dataset.city.split(':').map(Number), G = CITIES[gi], c = G[1][ci]; setLoc({ name: c[0], lat: c[1], lng: c[2], tz: c[3] || G[2], m: G[3] }); $('#sheet').hidden = true; if (!location.hash) home(); toast('المواقيت الآن حسب ' + c[0]); return; }
   const f = e.target.closest('[data-fs]'); if (f) { ST.fs = Math.min(2.4, Math.max(1.1, +(ST.fs + (f.dataset.fs === '+' ? .15 : -.15)).toFixed(2))); save(); applyPrefs(); return; }
