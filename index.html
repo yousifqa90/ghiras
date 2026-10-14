@@ -99,6 +99,9 @@ main{max-width:40rem;margin:0 auto;padding-inline:16px;padding-block:1rem 5rem}
 .pb{display:block;height:.55em}
 .card .ft{display:flex;align-items:center;gap:.4rem;padding:.5rem .7rem .6rem 1.05rem;border-top:1px dashed var(--line)}
 .card .src{flex:1;min-width:0;font-size:.8rem;color:var(--muted);line-height:1.7}
+.card .ft.wrap{flex-wrap:wrap;row-gap:.2rem}
+.card .ft.wrap .src{flex:1 1 100%;padding-bottom:.15rem}
+.card .ft.wrap .mini:first-of-type{margin-inline-start:auto}
 .ctr{flex:none;min-width:3.1rem;height:2.3rem;border-radius:999px;display:grid;place-items:center;font-weight:600;font-variant-numeric:tabular-nums;background:var(--green);color:var(--card);font-size:1rem;padding-inline:.6rem}
 .card.done{background:var(--done)}
 .card.done .tx{opacity:.6}
@@ -108,6 +111,14 @@ main{max-width:40rem;margin:0 auto;padding-inline:16px;padding-block:1rem 5rem}
 .mini{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;color:var(--muted);flex:none}
 .mini svg{width:18px;height:18px}
 .mini.on{color:var(--gold)}
+.hidbox{margin-top:1.2rem;border:1px dashed var(--line);border-radius:14px;padding:.2rem .8rem;background:color-mix(in srgb,var(--card) 60%,transparent)}
+.hidbox summary{cursor:pointer;color:var(--muted);font-size:.88rem;padding:.6rem 0;display:flex;align-items:center;gap:.4rem;list-style:none}
+.hidbox summary::-webkit-details-marker{display:none}
+.hidbox summary svg{width:16px;height:16px}
+.hrow{display:flex;align-items:center;gap:.6rem;padding:.55rem 0;border-top:1px solid var(--line)}
+.hrow .ht{flex:1;min-width:0;font-family:var(--f-text);font-size:1rem;line-height:1.8;color:var(--muted)}
+.hrow .chip{flex:none}
+.hall{display:flex;justify-content:center;padding:.5rem 0 .7rem;border-top:1px solid var(--line)}
 .q{color:var(--green);font-weight:700}
 .s{color:var(--red)}
 
@@ -157,6 +168,8 @@ main{max-width:40rem;margin:0 auto;padding-inline:16px;padding-block:1rem 5rem}
 .pinlink{display:inline-flex;align-items:center;gap:.35rem;color:var(--green);font-size:.85rem;padding:.35rem .7rem;border-radius:999px}
 .pinlink:hover{background:color-mix(in srgb,var(--green) 10%,transparent)}
 .pinbtn{display:inline-flex;align-items:center;gap:.35rem;margin-top:.6rem;font-size:.82rem;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:.25rem .75rem;background:var(--card)}
+.chbtns{display:flex;flex-wrap:wrap;gap:.4rem}
+.chbtns .pinbtn{margin-top:.6rem}
 .pinbtn.on{color:var(--green);border-color:color-mix(in srgb,var(--green) 45%,transparent)}
 .pk-hint{margin:0;color:var(--muted);font-size:.85rem}
 .pk{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:12px;overflow-y:auto;flex:1 1 auto;min-height:10rem;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
@@ -225,6 +238,15 @@ main{max-width:40rem;margin:0 auto;padding-inline:16px;padding-block:1rem 5rem}
 .pr-next small{opacity:.85;font-size:.85rem}
 .pr-next b{display:block;font-family:var(--f-text);font-size:2rem;line-height:1.3}
 .pr-next .tt{font-size:1.5rem;font-variant-numeric:tabular-nums;margin:-.1rem 0 .2rem}
+.pr-next.soon{background:var(--red)}
+.pr-next.soon .cd{font-size:1.6rem;font-weight:700;letter-spacing:.04em}
+.np.soon{border-color:color-mix(in srgb,var(--red) 45%,var(--line));background:color-mix(in srgb,var(--red) 8%,var(--card))}
+.np.soon .ic{background:var(--red)}
+.np.soon .tx2 b,.np.soon .left{color:var(--red);font-weight:700}
+.np.soon .left{font-size:1rem}
+.pre{display:flex;flex-direction:column;align-items:center;gap:.45rem;margin:.9rem 0 .2rem}
+.pre-r{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.4rem;font-size:.85rem;color:var(--muted)}
+.pre-n{margin:0;font-size:.74rem;color:var(--muted)}
 .pr-next .cd{font-size:1.05rem;font-variant-numeric:tabular-nums;opacity:.95}
 .pr-list{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}
 .pr-row{display:flex;align-items:center;justify-content:space-between;padding:.85rem 1rem;border-top:1px solid var(--line)}
@@ -274,6 +296,7 @@ const ICON = {
   copy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="8" y="8" width="11" height="12" rx="2"/><path d="M5 15V5a1 1 0 011-1h9"/></svg>',
   mosque:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c-3 2.2-5 4.1-5 6.5h10C17 7.1 15 5.2 12 3z"/><path d="M5 21v-9.5h14V21"/><path d="M10 21v-4a2 2 0 014 0v4"/><path d="M3 21h18"/></svg>',
   pinloc:'<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.6-6.5-11A6.5 6.5 0 0112 3.5 6.5 6.5 0 0118.5 10c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>',
+  eyeOff:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l18 18"/><path d="M10.6 5.1A10 10 0 0112 5c5 0 9 4.5 10 7a13 13 0 01-3.2 4.3M6.5 6.6A13 13 0 002 12c1 2.5 5 7 10 7a9.6 9.6 0 004.4-1"/><path d="M9.9 10a3 3 0 004.2 4.2"/></svg>',
   undo:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 7H15a5 5 0 010 10H8"/><path d="M11 4L8 7l3 3"/></svg>'
 };
 const AR = d => String(d).replace(/\d/g, c => '٠١٢٣٤٥٦٧٨٩'[c]);
@@ -288,7 +311,10 @@ const view = $('#view');
 const BY = {}; const ITEMS = {}; const SEC_OF = {};
 DATA.forEach(s => { BY[s.id] = s; s.items.forEach(it => { if (it.t === 'd') { ITEMS[it.n] = it; SEC_OF[it.n] = s.id; } }); });
 const READ_CH = DATA.filter(s => s.items.length);
-const counted = s => s.items.filter(i => i.t === 'd');
+const isHid = n => Array.isArray(ST.hidden) && ST.hidden.includes(n);
+const counted = s => s.items.filter(i => i.t === 'd' && !isHid(i.n));
+const secHid = s => Array.isArray(ST.hidSec) && ST.hidSec.includes(s.title);
+const hiddenIn = s => s.items.filter(i => i.t === 'd' && isHid(i.n));
 
 /* state */
 const KEY = 'ghiras-dhakireen:v1';
@@ -421,7 +447,7 @@ function home(){
   const close = () => { if (open) { h += '</div>'; open = false; } };
   const hasKids = s => DATA.some(c => c.kind === 'chap' && c.part === s.id);
   DATA.forEach(s => {
-    if (s.kind === 'chap') { h += row(s, s.title); return; }
+    if (s.kind === 'chap') { if (!secHid(s)) h += row(s, s.title); return; }
     const [a, b] = s.title.split(':');
     if (s.kind === 'part' || hasKids(s)) {
       if (s.kind === 'part') seenPart = true;
@@ -434,10 +460,14 @@ function home(){
       close();
       h += `<div class="grp"><h2>${seenPart ? 'ختام الكتاب' : 'بين يدي الكتاب'}</h2></div><div class="list">`; open = true;
     }
-    h += row(s, (b || a).trim()) + '<span hidden data-loose="1"></span>';
+    h += (secHid(s) ? '' : row(s, (b || a).trim())) + '<span hidden data-loose="1"></span>';
   });
   close();
+  const hs = DATA.filter(secHid);
+  if (hs.length) h += `<details class="hidbox"><summary>${ICON.eyeOff} أقسام أخفيتها من القائمة (${AR(hs.length)})</summary>
+    ${hs.map(x => `<div class="hrow"><span class="ht">${esc(x.title)}</span><button class="chip" data-act="unhide-sec" data-t="${esc(x.title)}">إظهار</button></div>`).join('')}</details>`;
   view.innerHTML = h;
+  view.querySelectorAll('.list').forEach(l => { if (!l.querySelector('.row')) { const g = l.previousElementSibling; if (g && g.classList.contains('grp')) g.remove(); l.remove(); } });
 }
 function row(s, name){
   const tot = counted(s).length, d = secDone(s), full = tot && d === tot;
@@ -453,16 +483,17 @@ function card(it, showIn){
       <div class="top"><span class="no">${AR(it.n)}</span>${it.c ? `<span class="when">${esc(it.c)}</span>` : ''}</div>
       <div class="tx">${mark(it.x)}</div>
     </button>
-    <div class="ft">
-      <div class="src">${it.s ? mark(it.s) : ''}</div>
+    <div class="ft${it.s && !ST.nosrc && plain(it.s).length > 38 ? ' wrap' : ''}">
+      <div class="src">${it.s && !ST.nosrc ? mark(it.s) : ''}</div>
       <button class="mini" data-act="undo" aria-label="تراجع عن العدّ">${ICON.undo}</button>
       <button class="mini${fav ? ' on' : ''}" data-act="fav" aria-label="المفضلة">${fav ? ICON.starOn : ICON.star}</button>
       <button class="mini" data-act="copy" aria-label="نسخ">${ICON.copy}</button>
+      ${showIn ? '' : `<button class="mini" data-act="hide" aria-label="إخفاء هذا الذكر">${ICON.eyeOff}</button>`}
       <button class="ctr" data-act="count" aria-label="المتبقي">${ctr}</button>
     </div></article>`;
 }
 function block(it){
-  if (it.t === 'd') return card(it);
+  if (it.t === 'd') return isHid(it.n) ? '' : card(it);
   if (it.t === 'h') return `<div class="blk h">${mark(it.x)}${it.s ? `<small>${mark(it.s)}</small>` : ''}</div>`;
   return `<div class="blk ${it.t}">${mark(it.x)}</div>`;
 }
@@ -473,8 +504,14 @@ function chapter(id, focus){
   const tot = counted(s).length;
   let h = `<div class="ch-head">${parent ? `<div class="crumb">${esc(parent.title.split(':')[0])}</div>` : ''}<h2>${esc(s.title.split(':').pop().trim())}</h2>
     ${tot ? `<div class="prog"><span id="pt">${AR(secDone(s))} / ${AR(tot)}</span><div class="bar2"><i id="pb" style="width:${secDone(s)/tot*100}%"></i></div><button data-act="reset-ch">إعادة</button></div>` : ''}
-    ${tot ? `<button class="pinbtn${pins().includes(id) ? ' on' : ''}" data-act="pin-ch">${ICON.pin} ${pins().includes(id) ? 'مثبّت في الرئيسية' : 'ثبّته في الرئيسية'}</button>` : ''}</div>
-    <div class="stack">${s.items.map(block).join('')}</div>`;
+    <div class="chbtns">${tot ? `<button class="pinbtn${pins().includes(id) ? ' on' : ''}" data-act="pin-ch">${ICON.pin} ${pins().includes(id) ? 'مثبّت في الرئيسية' : 'ثبّته في الرئيسية'}</button>` : ''}
+    ${s.kind !== 'part' ? `<button class="pinbtn${secHid(s) ? ' on' : ''}" data-act="hide-sec">${ICON.eyeOff} ${secHid(s) ? 'مخفي من القائمة، أعِده' : 'أخفِه من القائمة'}</button>` : ''}
+    ${tot && s.items.some(i => i.t !== 'd') ? `<button class="pinbtn${ST.lean ? ' on' : ''}" data-act="lean">${ST.lean ? 'إظهار الشروحات' : 'الأذكار فقط'}</button>` : ''}</div></div>
+    <div class="stack">${(ST.lean && tot ? s.items.filter(i => i.t === 'd') : s.items).map(block).join('')}</div>`;
+  const hid = hiddenIn(s);
+  if (hid.length) h += `<details class="hidbox"><summary>${ICON.eyeOff} أذكار أخفيتها من هذا الباب (${AR(hid.length)})</summary>
+    ${hid.map(it => `<div class="hrow"><span class="ht">${esc(plain(it.x).slice(0, 90))}${plain(it.x).length > 90 ? '…' : ''}</span><button class="chip" data-act="unhide" data-n="${it.n}">إظهار</button></div>`).join('')}
+    ${hid.length > 1 ? `<div class="hall"><button class="chip" data-act="unhide-all">إظهارها كلها</button></div>` : ''}</details>`;
   const i = READ_CH.indexOf(s), pv = READ_CH[i-1], nx = READ_CH[i+1];
   h += `<nav class="pager">${pv ? `<button data-go="${pv.id}"><small>السابق</small><b>${esc(pv.title.split(':').pop().trim())}</b></button>` : '<span style="flex:1"></span>'}${nx ? `<button class="nx" data-go="${nx.id}"><small>التالي</small><b>${esc(nx.title.split(':').pop().trim())}</b></button>` : ''}</nav>`;
   view.innerHTML = h;
@@ -623,14 +660,20 @@ function nextPrayer(){
   for (const k of ['fajr', 'dhuhr', 'asr', 'maghrib', 'isha']) if (t[k] && t[k] > now) return { k, at: t[k], today: t };
   return { k: 'fajr', at: prayerDay(1).fajr, today: t };
 }
+/* pre-adhan alert settings: minutes before (0 = off), sound, vibration */
+const preCfg = () => Object.assign({ m: 5, snd: true, vib: true }, ST.pre || {});
+const minW = x => x === 1 ? 'دقيقة واحدة' : x === 2 ? 'دقيقتان' : AR(x) + (x <= 10 ? ' دقائق' : ' دقيقة');
+const cdThr = () => Math.max(10, preCfg().m) * 60000;          /* live mm:ss countdown starts here */
+const mmss = ms => { const t = Math.max(0, Math.ceil(ms / 1000)), m = Math.floor(t / 60), x = t % 60; return AR(String(m).padStart(2, '0')) + ':' + AR(String(x).padStart(2, '0')); };
 function leftTxt(ms){
+  if (ms <= cdThr()) return 'باقي ' + mmss(ms);
   const m = Math.max(0, Math.ceil(ms / 60000)), h = Math.floor(m / 60), r = m % 60;
   return 'بعد ' + (h ? AR(h) + ' س ' : '') + AR(r) + ' د';
 }
 function npBanner(){
   try {
     const n = nextPrayer(), L = loc();
-    return `<button class="np" data-go="salah" id="np"><span class="ic">${ICON.mosque}</span><span class="tx2"><small>الصلاة القادمة في ${esc(L.name)}</small><b>${PNAMES[n.k]} ${fmtT(n.at, L.tz)}</b></span><span class="left">${leftTxt(n.at - Date.now())}</span></button>`;
+    return `<button class="np${n.at - Date.now() <= cdThr() ? ' soon' : ''}" data-go="salah" id="np"><span class="ic">${ICON.mosque}</span><span class="tx2"><small>الصلاة القادمة في ${esc(L.name)}</small><b>${PNAMES[n.k]} ${fmtT(n.at, L.tz)}</b></span><span class="left">${leftTxt(n.at - Date.now())}</span></button>`;
   } catch (e) { return ''; }
 }
 function salah(){
@@ -641,8 +684,11 @@ function salah(){
       <button class="city" data-act="loc">${ICON.pinloc} ${esc(L.name)}</button>
       ${ST.loc ? '' : `<div class="pr-ask"><button class="chip" data-act="loc">${ICON.pinloc} حدّد موقعك أو مدينتك</button></div>`}
       <div class="dates">${hijri(new Date(), L.tz, { day: 'numeric', month: 'long', year: 'numeric' })}<br>${greg}</div></div>
-    <div class="pr-next"><small>الصلاة القادمة</small><b>${PNAMES[n.k]}</b><div class="tt">${fmtT(n.at, L.tz)}</div><div class="cd" id="cd">${leftTxt(n.at - now)}</div></div>
+    <div class="pr-next${n.at - now <= cdThr() ? ' soon' : ''}" id="prn"><small>الصلاة القادمة</small><b>${PNAMES[n.k]}</b><div class="tt">${fmtT(n.at, L.tz)}</div><div class="cd" id="cd">${leftTxt(n.at - now)}</div></div>
     <div class="pr-list">${Object.keys(PNAMES).map(k => `<div class="pr-row${k === 'sunrise' ? ' sr' : ''}${n.k === k && n.at === t[k] ? ' nx' : ''}${t[k] && t[k] < now && !(n.k === k && n.at === t[k]) ? ' past' : ''}"><span class="nm">${PNAMES[k]}</span><span class="tm">${fmtT(t[k], L.tz)}</span></div>`).join('')}</div>
+    ${(() => { const P = preCfg(); return `<div class="pre"><div class="pre-r"><span>تنبيه قبل الأذان:</span>${[0, 5, 10, 15].map(m => `<button class="chip${P.m === m ? ' on' : ''}" data-pre="${m}">${m ? AR(m) + ' د' : 'إيقاف'}</button>`).join('')}</div>
+      ${P.m ? `<div class="pre-r"><button class="chip${P.snd ? ' on' : ''}" data-pret="snd">🔔 نغمة</button>${CAN_VIB ? `<button class="chip${P.vib ? ' on' : ''}" data-pret="vib">📳 اهتزاز</button>` : ''}</div>
+      <p class="pre-n">يعمل التنبيه والتطبيق مفتوح على الشاشة.</p>` : ''}</div>`; })()}
     <div class="pr-meta"><button class="chip" data-act="loc">طريقة الحساب: ${esc(M.n)}${L.m === 'umm' ? (isRamadan(new Date(), L.tz) ? ' (رمضان: العشاء بعد المغرب بساعتين)' : '') : ''}</button></div>
     <div class="pr-links">${[['أذكار الأذان','عند سماع المؤذن'],['الأذكار بعد السلام من الصلاة','دبر كل صلاة'],['أذكار الصباح والمساء','بعد الفجر وبعد العصر'],['أذكار المسجد','الدخول والخروج']].map(([tt, sb]) => { const s = DATA.find(x => x.title === tt); return s ? `<button class="qt" data-go="${s.id}"><b>${esc(shortName(s))}</b><span>${sb}</span></button>` : ''; }).join('')}</div>
     <p class="pr-note">المواقيت تُحسب فلكيًّا على جهازك دون إنترنت، وقد تختلف دقيقة أو دقيقتين عن تقويم بلدك الرسمي؛ فاحتط للفجر والمغرب.</p>`;
@@ -660,11 +706,32 @@ function locSheet(){
   sh.innerHTML = h; sh.hidden = false;
 }
 function setLoc(o){ ST.loc = Object.assign({}, loc(), o); save(); if (location.hash === '#salah') salah(); }
+/* one ticker: live countdown, pre-adhan chime, and "it is time" chime */
+let _fired = {};
+function preAlert(msg, twice){
+  const P = preCfg();
+  if (P.snd) { chime(); if (twice) setTimeout(chime, 900); }
+  if (P.vib && CAN_VIB) buzz(twice ? [200, 120, 200, 120, 400] : [150, 100, 150]);
+  toast(msg); const t = $('#toast'); clearTimeout(toast.h); toast.h = setTimeout(() => t.hidden = true, 6000);
+}
+let _lastTick = 0;
 setInterval(() => {
   if (document.hidden) return;
-  if (location.hash === '#salah' && $('#cd')) { const n = nextPrayer(); if (n.at - Date.now() <= 0 || $('#cd').dataset.k && $('#cd').dataset.k !== n.k) salah(); else $('#cd').textContent = leftTxt(n.at - Date.now()); $('#cd').dataset.k = n.k; }
+  let n; try { n = nextPrayer(); } catch (e) { return; }
+  const now = Date.now(), left = n.at - now, P = preCfg(), key = n.k + n.at;
+  /* alerts */
+  if (P.m && left > 0 && left <= P.m * 60000 && !_fired['pre' + key]) { _fired['pre' + key] = 1; preAlert('باقي ' + minW(Math.ceil(left / 60000)) + ' على أذان ' + PNAMES[n.k]); }
+  const prev = _lastTick && _lastTick.k !== key ? _lastTick : null;
+  if (P.m && prev && now - prev.at < 90000 && now >= prev.at && !_fired['now' + prev.k]) { _fired['now' + prev.k] = 1; preAlert('حان الآن وقت أذان ' + prev.name, true); }
+  _lastTick = { k: key, at: n.at, name: PNAMES[n.k] };
+  /* views: refresh every second inside the countdown window, otherwise every 20 s */
+  const fast = left <= cdThr(), sec = Math.floor(now / 1000);
+  if (!fast && sec % 20) return;
+  if (location.hash === '#salah' && $('#cd')) { if ($('#cd').dataset.k && $('#cd').dataset.k !== key || !!$('#prn.soon') !== fast) salah(); else $('#cd').textContent = leftTxt(left); $('#cd').dataset.k = key; }
   const b = $('#np'); if (b) b.outerHTML = npBanner();
-}, 20000);
+}, 1000);
+/* browsers only allow sound after a tap: unlock audio on the first touch */
+document.addEventListener('pointerdown', () => { if (preCfg().snd || tsbAlert().snd) { try { _ac = _ac || new (window.AudioContext || window.webkitAudioContext)(); if (_ac.state === 'suspended') _ac.resume(); } catch (e) {} } }, { capture: true });
 
 /* locate the user, explaining clearly what to do when location is off or blocked */
 function geoMsg(html, busy){ const b = $('#geost'); if (!b) { toast(html.replace(/<[^>]+>/g, '')); return; } b.hidden = false; b.className = 'geost' + (busy ? ' busy' : ''); b.innerHTML = html; }
@@ -703,6 +770,10 @@ function settings(){
     <div class="opt"><label>حجم الخط</label><div class="seg"><button data-fs="-">أ−</button><button data-fs="+">أ+</button></div></div>
     <div class="prev" id="fsprev">سُبْحَانَ اللَّهِ وَبِحَمْدِهِ، سُبْحَانَ اللَّهِ الْعَظِيمِ</div>
     <div class="opt"><label>المظهر</label><div class="seg">${[['auto','تلقائي'],['light','فاتح'],['dark','داكن']].map(([k, v]) => `<button data-th="${k}" class="${ST.theme === k ? 'on' : ''}">${v}</button>`).join('')}</div></div>
+    <div class="opt"><label>الشروحات داخل الأبواب</label><div class="seg"><button data-act="opt-lean" data-v="0" class="${ST.lean ? '' : 'on'}">ظاهرة</button><button data-act="opt-lean" data-v="1" class="${ST.lean ? 'on' : ''}">مخفية</button></div></div>
+    <div class="opt"><label>التخريج تحت كل ذكر</label><div class="seg"><button data-act="opt-src" data-v="0" class="${ST.nosrc ? '' : 'on'}">ظاهر</button><button data-act="opt-src" data-v="1" class="${ST.nosrc ? 'on' : ''}">مخفي</button></div></div>
+    ${(ST.hidSec || []).length ? `<div class="opt"><label>الأقسام المخفية من القائمة: ${AR(ST.hidSec.length)}</label><button class="chip" data-act="unhide-secs">إظهارها كلها</button></div>` : ''}
+    ${(ST.hidden || []).length ? `<div class="opt"><label>الأذكار المخفية: ${AR(ST.hidden.length)}</label><button class="chip" data-act="unhide-every">إظهارها كلها</button></div>` : ''}
     <div id="rz"><button class="danger" data-act="ask-reset">تصفير عدّادات اليوم</button></div>
     <div class="install"><b>تثبيته على الجوال:</b> افتح هذه الصفحة في متصفح Chrome، ثم من القائمة ⋮ اختر «إضافة إلى الشاشة الرئيسية»، فيظهر بأيقونة كالتطبيق. يُحفظ تقدّمك ومفضّلتك على هذا الجهاز، وتُصفَّر العدّادات تلقائيًا كل يوم.</div>
     <button class="chip" data-act="close" style="align-self:center">إغلاق</button></div>`;
@@ -754,6 +825,10 @@ document.addEventListener('click', e => {
       const i = ST.fav.indexOf(n); i < 0 ? ST.fav.push(n) : ST.fav.splice(i, 1); save();
       toast(i < 0 ? 'أُضيف إلى المفضّلة' : 'أُزيل من المفضّلة');
       if (location.hash === '#fav') favs(); else refreshCard(n);
+    } else if (a.dataset.act === 'hide') {
+      ST.hidden = (ST.hidden || []).concat(n); save();
+      const y = scrollY, sec = view.dataset.sec; chapter(sec); scrollTo({ top: y, behavior: 'instant' });
+      toast('أُخفي الذكر، وتجده أسفل الصفحة إن أردت إعادته');
     } else if (a.dataset.act === 'copy') {
       const txt = plain(it.x) + (it.s ? '\n— ' + plain(it.s) : '');
       copyText(txt, 'نُسخ الذكر');
@@ -762,6 +837,17 @@ document.addEventListener('click', e => {
   }
   if (a) {
     const act = a.dataset.act;
+    if (act === 'unhide' || act === 'unhide-all') {
+      const sec = view.dataset.sec, ids = act === 'unhide' ? [+a.dataset.n] : hiddenIn(BY[sec]).map(i => i.n);
+      ST.hidden = (ST.hidden || []).filter(x => !ids.includes(x)); save();
+      const y = scrollY; chapter(sec); scrollTo({ top: y, behavior: 'instant' }); toast(ids.length > 1 ? 'أُعيدت الأذكار' : 'أُعيد الذكر'); return;
+    }
+    if (act === 'hide-sec') { const sc = BY[view.dataset.sec], was = secHid(sc); ST.hidSec = was ? ST.hidSec.filter(x => x !== sc.title) : (ST.hidSec || []).concat(sc.title); save(); const y = scrollY; chapter(sc.id); scrollTo({ top: y, behavior: 'instant' }); toast(was ? 'أُعيد إلى القائمة' : 'أُخفي من القائمة، وتجده أسفل الرئيسية'); return; }
+    if (act === 'unhide-sec') { ST.hidSec = (ST.hidSec || []).filter(x => x !== a.dataset.t); save(); home(); toast('أُعيد إلى القائمة'); return; }
+    if (act === 'lean') { ST.lean = !ST.lean; save(); const y = scrollY; chapter(view.dataset.sec); if (!ST.lean) scrollTo({ top: y, behavior: 'instant' }); return; }
+    if (act === 'opt-lean' || act === 'opt-src') { const k = act === 'opt-lean' ? 'lean' : 'nosrc'; ST[k] = a.dataset.v === '1'; save(); settings(); if (location.hash && BY[location.hash.slice(1)]) chapter(location.hash.slice(1)); return; }
+    if (act === 'unhide-secs') { ST.hidSec = []; save(); settings(); toast('أُعيدت كل الأقسام'); return; }
+    if (act === 'unhide-every') { ST.hidden = []; save(); settings(); toast('أُعيدت كل الأذكار المخفية'); return; }
     if (act === 'reset-ch') { counted(BY[view.dataset.sec]).forEach(i => delete ST.done[i.n]); save(); chapter(view.dataset.sec); }
     else if (act === 'tsb-reset') { ST.tsb.n = 0; save(); tasbih(); }
     else if (act === 'pick') picker();
@@ -799,6 +885,10 @@ document.addEventListener('click', e => {
   if (ad) { const t = cleanDhikr(ITEMS[+ad.dataset.adddh].x); ST.tsb.custom = (ST.tsb.custom || []).concat(t); ST.tsb.i = allPhr().length - 1; ST.tsb.n = 0; save(); tasbih(); window.scrollTo(0, 0); toast('أُضيف إلى السُّبحة'); return; }
   const ph = e.target.closest('[data-ph]'); if (ph) { ST.tsb.i = +ph.dataset.ph; ST.tsb.n = 0; save(); tasbih(); return; }
   const gl = e.target.closest('[data-goal]'); if (gl) { ST.tsb.goal = +gl.dataset.goal; save(); tasbih(); return; }
+  const pr = e.target.closest('[data-pre]');
+  if (pr) { ST.pre = Object.assign(preCfg(), { m: +pr.dataset.pre }); save(); salah(); if (ST.pre.m) toast('سينبّهك قبل الأذان بـ ' + minW(ST.pre.m).replace('دقيقتان', 'دقيقتين')); return; }
+  const pt = e.target.closest('[data-pret]');
+  if (pt) { const k = pt.dataset.pret, P = preCfg(); P[k] = !P[k]; ST.pre = P; save(); salah(); if (P[k]) { if (k === 'snd') chime(); else buzz([150, 100, 150]); } return; }
   const ct = e.target.closest('[data-city]');
   if (ct) { const [gi, ci] = ct.dataset.city.split(':').map(Number), G = CITIES[gi], c = G[1][ci]; setLoc({ name: c[0], lat: c[1], lng: c[2], tz: c[3] || G[2], m: G[3] }); $('#sheet').hidden = true; if (!location.hash) home(); toast('المواقيت الآن حسب ' + c[0]); return; }
   const f = e.target.closest('[data-fs]'); if (f) { ST.fs = Math.min(2.4, Math.max(1.1, +(ST.fs + (f.dataset.fs === '+' ? .15 : -.15)).toFixed(2))); save(); applyPrefs(); return; }
