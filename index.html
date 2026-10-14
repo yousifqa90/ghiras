@@ -131,6 +131,10 @@ main{max-width:40rem;margin:0 auto;padding-inline:16px;padding-block:1rem 5rem}
 .res .in{font-size:.75rem;color:var(--gold);margin-bottom:.1rem}
 
 /* tasbih */
+.alerts{display:flex;align-items:center;gap:.45rem;flex-wrap:wrap;justify-content:center;font-size:.85rem;color:var(--muted)}
+.alert-note{margin:-.5rem 0 0;font-size:.75rem;color:var(--muted);text-align:center}
+.bead.fin{animation:fin .7s ease-out}
+@keyframes fin{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--green) 55%,transparent)}100%{box-shadow:0 0 0 26px transparent}}
 .tsb{display:flex;flex-direction:column;align-items:center;gap:1rem;padding-top:1rem}
 .chips{display:flex;flex-wrap:wrap;gap:.4rem;justify-content:center}
 .chip{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:.35rem .85rem;font-size:.88rem}
@@ -141,7 +145,7 @@ main{max-width:40rem;margin:0 auto;padding-inline:16px;padding-block:1rem 5rem}
 .quick.arr .qt:not([data-pid]){opacity:.4}
 .qt.ph{opacity:.25}
 .qt.ghost{position:fixed;z-index:60;pointer-events:none;margin:0;box-shadow:0 14px 34px rgba(0,0,0,.28);transform:scale(1.04);cursor:grabbing}
-.qt .rm{position:absolute;top:-.5rem;left:-.5rem;width:1.75rem;height:1.75rem;border-radius:50%;background:var(--red);color:#fff;display:grid;place-items:center;font-size:1.1rem;line-height:1;border:2px solid var(--bg);padding:0}
+.qt .rm{position:absolute;top:-.5rem;left:-.5rem;width:1.75rem;height:1.75rem;border-radius:50%;background:var(--red);color:#fff;display:grid;place-items:center;font-size:1.1rem;line-height:1;border:2px solid var(--paper);padding:0}
 .pinbar .done{background:var(--green);color:#fff;font-weight:700}
 .pinbar .done:hover{background:var(--green)}
 .arrhint{display:block;text-align:center;color:var(--muted);font-size:.82rem;margin:-1rem 0 .6rem}
@@ -172,6 +176,15 @@ main{max-width:40rem;margin:0 auto;padding-inline:16px;padding-block:1rem 5rem}
 .addf .ok{background:var(--green);color:var(--card)}
 .addf .no{border:1px solid var(--line)}
 .phrase{font-family:var(--f-text);font-size:1.7rem;color:var(--green);text-align:center;min-height:2.6em;line-height:1.5}
+.phrase.long{font-size:1.2rem;line-height:1.9}
+.tsb .chips .chip{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.addf .or{width:100%;font-size:.8rem;color:var(--muted);margin:.2rem 0 -.1rem}
+.dlist{width:100%;max-height:min(55vh,26rem);overflow-y:auto;overscroll-behavior:contain;border:1px solid var(--line);border-radius:12px;background:var(--paper)}
+.dlist h4{position:sticky;top:0;margin:0;padding:.4rem .7rem;font-family:var(--f-text);font-size:1rem;color:var(--red);background:color-mix(in srgb,var(--gold) 12%,var(--paper));backdrop-filter:blur(4px)}
+.dlist button{display:block;width:100%;text-align:right;padding:.55rem .75rem;border-top:1px solid var(--line);font-family:var(--f-text);font-size:1.05rem;line-height:1.8;color:var(--ink)}
+.dlist button:hover{background:color-mix(in srgb,var(--green) 8%,transparent)}
+.dlist button[disabled]{color:var(--muted);opacity:.6}
+.dlist button small{display:block;font-family:var(--f-ui,inherit);font-size:.72rem;color:var(--gold);line-height:1.4}
 .bead{width:min(68vw,260px);aspect-ratio:1;border-radius:50%;background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);position:relative;display:grid;place-items:center;max-width:100%}
 .bead svg.ring{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}
 .bead .num{font-size:3.4rem;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums;line-height:1}
@@ -193,6 +206,46 @@ main{max-width:40rem;margin:0 auto;padding-inline:16px;padding-block:1rem 5rem}
 .confirm{display:flex;gap:.5rem;align-items:center;font-size:.88rem;flex-wrap:wrap}
 
 .toast{position:fixed;left:50%;bottom:calc(1.2rem + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:.5rem 1rem;border-radius:999px;font-size:.88rem;z-index:30}
+
+/* prayer times */
+.np{display:flex;align-items:center;gap:.7rem;width:100%;margin:1rem 0 -.4rem;padding:.7rem .9rem;border-radius:14px;border:1px solid color-mix(in srgb,var(--green) 35%,var(--line));background:color-mix(in srgb,var(--green) 7%,var(--card));text-align:right;color:var(--ink)}
+.np .ic{width:2.2rem;height:2.2rem;border-radius:50%;display:grid;place-items:center;background:var(--green);color:var(--card);flex:none}
+.np .ic svg{width:1.2rem;height:1.2rem}
+.np .tx2{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.35}
+.np .tx2 small{color:var(--muted);font-size:.78rem}
+.np .tx2 b{font-family:var(--f-text);font-size:1.15rem;color:var(--green)}
+.np .left{font-size:.85rem;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.pr-head{text-align:center;padding:1.2rem 0 .6rem}
+.pr-head .city{display:inline-flex;align-items:center;gap:.35rem;font-family:var(--f-text);font-size:1.5rem;color:var(--red);padding:.1rem .7rem;border-radius:999px}
+.pr-head .city:hover{background:color-mix(in srgb,var(--gold) 12%,transparent)}
+.pr-head .dates{color:var(--muted);font-size:.88rem;margin-top:.2rem}
+.pr-next{margin:.6rem 0 1rem;padding:1.1rem 1rem;border-radius:18px;background:var(--green);color:var(--card);text-align:center}
+.pr-next small{opacity:.85;font-size:.85rem}
+.pr-next b{display:block;font-family:var(--f-text);font-size:2rem;line-height:1.3}
+.pr-next .tt{font-size:1.5rem;font-variant-numeric:tabular-nums;margin:-.1rem 0 .2rem}
+.pr-next .cd{font-size:1.05rem;font-variant-numeric:tabular-nums;opacity:.95}
+.pr-list{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}
+.pr-row{display:flex;align-items:center;justify-content:space-between;padding:.85rem 1rem;border-top:1px solid var(--line)}
+.pr-row:first-child{border-top:0}
+.pr-row .nm{font-family:var(--f-text);font-size:1.2rem}
+.pr-row .tm{font-size:1.05rem;font-variant-numeric:tabular-nums}
+.pr-row.sr{color:var(--muted)}
+.pr-row.sr .nm{font-size:1.02rem}
+.pr-row.past{color:var(--muted)}
+.pr-row.nx{background:color-mix(in srgb,var(--green) 10%,transparent)}
+.pr-row.nx .nm,.pr-row.nx .tm{color:var(--green);font-weight:700}
+.pr-meta{display:flex;justify-content:center;margin:.8rem 0 .2rem}
+.pr-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem;margin-top:1rem}
+.pr-links .qt b{font-size:1.05rem}
+.pr-note{color:var(--muted);font-size:.78rem;text-align:center;margin:1rem .5rem 0;line-height:1.7}
+.loc-l{display:flex;flex-wrap:wrap;gap:.4rem;padding:.2rem .6rem .5rem}
+.loc-g{font-family:var(--f-text);color:var(--red);font-size:1.05rem;padding:.4rem .7rem 0}
+.geo{display:flex;align-items:center;justify-content:center;gap:.4rem;border:1px solid var(--green);color:var(--green);border-radius:12px;padding:.6rem;font-weight:700}
+.geost{border-radius:12px;padding:.7rem .8rem;font-size:.86rem;line-height:1.8;background:color-mix(in srgb,var(--red) 7%,var(--card));border:1px solid color-mix(in srgb,var(--red) 30%,var(--line))}
+.geost.busy{background:color-mix(in srgb,var(--green) 7%,var(--card));border-color:color-mix(in srgb,var(--green) 30%,var(--line))}
+.geost .chip{margin-top:.4rem;display:inline-block}
+.pr-ask{display:flex;justify-content:center;margin-top:.4rem}
+.meth{width:100%;padding:.55rem .6rem;border:1px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);font:inherit}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
 
@@ -217,6 +270,8 @@ const ICON = {
   star:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8L3.5 9.7l5.9-.8z"/></svg>',
   starOn:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8L3.5 9.7l5.9-.8z"/></svg>',
   copy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="8" y="8" width="11" height="12" rx="2"/><path d="M5 15V5a1 1 0 011-1h9"/></svg>',
+  mosque:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c-3 2.2-5 4.1-5 6.5h10C17 7.1 15 5.2 12 3z"/><path d="M5 21v-9.5h14V21"/><path d="M10 21v-4a2 2 0 014 0v4"/><path d="M3 21h18"/></svg>',
+  pinloc:'<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.6-6.5-11A6.5 6.5 0 0112 3.5 6.5 6.5 0 0118.5 10c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>',
   undo:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 7H15a5 5 0 010 10H8"/><path d="M11 4L8 7l3 3"/></svg>'
 };
 const AR = d => String(d).replace(/\d/g, c => '٠١٢٣٤٥٦٧٨٩'[c]);
@@ -286,6 +341,26 @@ function copyText(txt, okMsg){
 }
 function toast(m){ const t = $('#toast'); t.textContent = m; t.hidden = false; clearTimeout(toast.h); toast.h = setTimeout(() => t.hidden = true, 1600); }
 function buzz(ms){ try { navigator.vibrate && navigator.vibrate(ms); } catch (e) {} }
+/* tasbih completion alert: vibration (Android) and/or a soft chime.
+   On iPhone the chime follows the silent switch automatically; iPhone has no web vibration. */
+const IOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+const CAN_VIB = !!navigator.vibrate && !IOS;
+const tsbAlert = () => { const a = ST.tsb.alert || {}; return { vib: CAN_VIB && a.vib !== false, snd: a.snd === undefined ? IOS : !!a.snd }; };
+let _ac = null;
+function chime(){
+  try {
+    _ac = _ac || new (window.AudioContext || window.webkitAudioContext)();
+    if (_ac.state === 'suspended') _ac.resume();
+    const t0 = _ac.currentTime + .01;
+    [[1318.5, 0, .9], [1975.5, .12, .7]].forEach(([f, d, len]) => {
+      const o = _ac.createOscillator(), g = _ac.createGain();
+      o.type = 'sine'; o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001, t0 + d); g.gain.exponentialRampToValueAtTime(.35, t0 + d + .015); g.gain.exponentialRampToValueAtTime(.0001, t0 + d + len);
+      o.connect(g).connect(_ac.destination); o.start(t0 + d); o.stop(t0 + d + len + .05);
+    });
+  } catch (e) {}
+}
+function unlockAudio(){ if (!tsbAlert().snd) return; try { _ac = _ac || new (window.AudioContext || window.webkitAudioContext)(); if (_ac.state === 'suspended') _ac.resume(); } catch (e) {} }
 const left = it => Math.max(0, it.k - (ST.done[it.n] || 0));
 const secDone = s => counted(s).filter(i => left(i) === 0).length;
 
@@ -326,7 +401,7 @@ function home(){
     <p class="t">غِراس الذاكرين</p>
     <div class="orn"><i></i></div>
     <p class="hadith">«أقرئ أمتك مني السلام، وأخبرهم أن الجنة طيبة التربة، عذبة الماء، وأنها قيعان، وأن غراسها: سبحان الله، والحمد لله، ولا إله إلا الله، والله أكبر»</p>
-  </section>${ARR ? '<p class="arrhint">اسحب المربعات لترتيبها، و × لإزالة القسم من هنا</p>' : ''}<div class="quick${ARR ? ' arr' : ''}">`;
+  </section>${ARR ? '' : npBanner()}${ARR ? '<p class="arrhint">اسحب المربعات لترتيبها، و × لإزالة القسم من هنا</p>' : ''}<div class="quick${ARR ? ' arr' : ''}">`;
   pins().forEach(id => {
     const s = BY[id]; if (!s) return;
     const tot = counted(s).length, d = secDone(s);
@@ -427,6 +502,17 @@ function search(){
 }
 const PHR = ['سبحان الله','الحمد لله','لا إله إلا الله','الله أكبر','سبحان الله وبحمده','أستغفر الله وأتوب إليه','لا حول ولا قوة إلا بالله','اللهم صلِّ وسلم على نبينا محمد'];
 const allPhr = () => PHR.concat(ST.tsb.custom || []);
+/* the absolute adhkar (part one of the book), offered when adding to the tasbih */
+const ABS_PART = (DATA.find(s => s.kind === 'part' && s.title.startsWith('الباب الأول')) || {}).id;
+const cleanDhikr = x => plain(x).replace(/[ۖ-ۜ]/g, '').replace(/\s+/g, ' ').trim();
+function absList(){
+  const have = new Set(allPhr().map(norm));
+  return '<div class="dlist">' + DATA.filter(s => s.kind === 'chap' && s.part === ABS_PART).map(s => {
+    const its = counted(s); if (!its.length) return '';
+    return `<h4>${esc(s.title)}</h4>` + its.map(it => { const t = cleanDhikr(it.x), on = have.has(norm(t));
+      return `<button type="button" data-adddh="${it.n}"${on ? ' disabled' : ''}>${on ? '<small>مضاف في السُّبحة</small>' : (it.c ? `<small>${esc(it.c)}</small>` : '')}${esc(t)}</button>`; }).join('');
+  }).join('') + '</div>';
+}
 function tasbih(adding){
   setBar('السُّبحة', true);
   const T = ST.tsb, C = 2 * Math.PI * 46, L = allPhr();
@@ -435,15 +521,16 @@ function tasbih(adding){
   view.innerHTML = `<div class="tsb">
     <div class="chips">${L.map((p, i) => `<button class="chip${i === T.i ? ' on' : ''}" data-ph="${i}">${esc(p)}${i >= PHR.length ? `<span class="x" data-act="tsb-del" data-i="${i - PHR.length}" role="button" aria-label="حذف هذا الذكر">×</span>` : ''}</button>`).join('')}
       <button class="chip add" data-act="tsb-add-open">+ أضف ذكرًا</button></div>
-    ${adding ? `<form class="addf" id="addf"><input id="newdhikr" maxlength="120" placeholder="اكتب الذكر، مثل: حسبي الله ونعم الوكيل" autocomplete="off"><div class="btns"><button class="ok" type="submit">إضافة</button><button class="no" type="button" data-act="tsb-add-cancel">إلغاء</button></div></form>` : ''}
-    <div class="phrase">${esc(L[T.i])}</div>
+    ${adding ? `<form class="addf" id="addf"><div class="or">اختر من الأذكار المطلقة في الكتاب:</div>${absList()}<div class="or">أو اكتب ذكرًا من عندك:</div><input id="newdhikr" maxlength="200" placeholder="مثل: حسبي الله ونعم الوكيل" autocomplete="off"><div class="btns"><button class="ok" type="submit">إضافة</button><button class="no" type="button" data-act="tsb-add-cancel">إلغاء</button></div></form>` : ''}
+    <div class="phrase${L[T.i].length > 45 ? ' long' : ''}">${esc(L[T.i])}</div>
     <button class="bead" id="bead" aria-label="سبّح">
       <svg class="ring" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="none" stroke="var(--line)" stroke-width="3"/><circle cx="50" cy="50" r="46" fill="none" stroke="var(--green)" stroke-width="3" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C * (1 - pct)}"/></svg>
       <div><div class="num">${AR(T.n)}</div><div class="of">${T.goal ? 'من ' + AR(T.goal) : 'بلا حدّ'}</div></div>
     </button>
     <div class="chips">${[33, 100, 0].map(g => `<button class="chip${g === T.goal ? ' on' : ''}" data-goal="${g}">${g ? AR(g) : 'بلا حدّ'}</button>`).join('')}</div>
+    ${(() => { const A = tsbAlert(); return `<div class="alerts"><span>عند إكمال العدد:</span>${CAN_VIB ? `<button class="chip${A.vib ? ' on' : ''}" data-alert="vib" aria-pressed="${A.vib}">📳 اهتزاز</button>` : ''}<button class="chip${A.snd ? ' on' : ''}" data-alert="snd" aria-pressed="${A.snd}">🔔 صوت</button></div>${IOS ? '<p class="alert-note">في الآيفون يعمل الصوت فقط إذا لم يكن الجوال على الوضع الصامت.</p>' : ''}`; })()}
     <button class="reset" data-act="tsb-reset">تصفير العدّاد</button></div>`;
-  if (adding) { const inp = document.getElementById('newdhikr'); inp.focus(); }
+
 }
 document.addEventListener('submit', e => {
   if (e.target.id !== 'addf') return;
@@ -453,6 +540,158 @@ document.addEventListener('submit', e => {
   ST.tsb.custom = (ST.tsb.custom || []).concat(v);
   ST.tsb.i = allPhr().length - 1; ST.tsb.n = 0; save(); tasbih(); toast('أُضيف الذكر');
 });
+
+/* prayer times — astronomical calculation on the device (no network) */
+const PT = (() => {
+  const R = Math.PI / 180;
+  const sn = x => Math.sin(x * R), cs = x => Math.cos(x * R), tn = x => Math.tan(x * R);
+  const as = x => Math.asin(x) / R, ac = x => Math.acos(x) / R, at2 = (y, x) => Math.atan2(y, x) / R;
+  const fx = (a, b) => { a -= b * Math.floor(a / b); return a < 0 ? a + b : a; };
+  const jul = (y, m, d) => { if (m <= 2) { y--; m += 12; } const A = Math.floor(y / 100), B = 2 - A + Math.floor(A / 4); return Math.floor(365.25 * (y + 4716)) + Math.floor(30.6001 * (m + 1)) + d + B - 1524.5; };
+  function sun(jd){
+    const D = jd - 2451545, g = fx(357.529 + .98560028 * D, 360), q = fx(280.459 + .98564736 * D, 360);
+    const L = fx(q + 1.915 * sn(g) + .02 * sn(2 * g), 360), e = 23.439 - .00000036 * D;
+    const ra = fx(at2(cs(e) * sn(L), cs(L)) / 15, 24);
+    return { decl: as(sn(e) * sn(L)), eqt: q / 15 - ra };
+  }
+  const METHODS = {
+    umm:   { n: 'أم القرى', f: 18.5, i: 90 },
+    egypt: { n: 'الهيئة المصرية العامة للمساحة', f: 19.5, a: 17.5 },
+    mwl:   { n: 'رابطة العالم الإسلامي', f: 18, a: 17 },
+    kar:   { n: 'جامعة العلوم الإسلامية بكراتشي', f: 18, a: 18 },
+    isna:  { n: 'أمريكا الشمالية', f: 15, a: 15 },
+  };
+  /* returns UTC Date objects for the civil date y-m-d at (lat,lng) */
+  function day(y, m, d, lat, lng, mk, ramadan){
+    const M = METHODS[mk] || METHODS.umm, jd = jul(y, m, d) - lng / 360;
+    const noonAt = t => fx(12 - sun(jd + t / 24).eqt, 24);
+    const angT = (ang, t, before) => {
+      const { decl } = sun(jd + t / 24), n = noonAt(t);
+      const v = ac((-sn(ang) - sn(decl) * sn(lat)) / (cs(decl) * cs(lat))) / 15;
+      return n + (before ? -v : v);
+    };
+    const asrT = t => {
+      const { decl } = sun(jd + t / 24), ang = -at2(1, 1 + tn(Math.abs(lat - decl)));
+      return angT(ang, t, false);
+    };
+    let T = { fajr: 5, sunrise: 6, dhuhr: 12, asr: 13, maghrib: 18, isha: 18 };
+    for (let k = 0; k < 2; k++) T = {
+      fajr: angT(M.f, T.fajr, true), sunrise: angT(.833, T.sunrise, true), dhuhr: noonAt(T.dhuhr),
+      asr: asrT(T.asr), maghrib: angT(.833, T.maghrib, false), isha: M.i ? 0 : angT(M.a, T.isha, false) };
+    if (M.i) T.isha = T.maghrib + (ramadan ? 120 : M.i) / 60;
+    T.dhuhr += 1 / 60;                    /* a minute after the zenith */
+    const base = Date.UTC(y, m - 1, d), out = {};
+    for (const k in T) out[k] = isFinite(T[k]) ? new Date(base + Math.round((T[k] - lng / 15) * 60) * 60000) : null;
+    return out;
+  }
+  return { day, METHODS };
+})();
+
+const CITIES = [
+  ['السعودية', [['الرياض',24.7136,46.6753],['مكة المكرمة',21.4225,39.8262],['المدينة المنورة',24.4686,39.6142],['جدة',21.5433,39.1728],['الدمام',26.4207,50.0888],['بريدة',26.3592,43.9818],['أبها',18.2164,42.5053],['تبوك',28.3835,36.5662],['حائل',27.5114,41.7208],['جازان',16.8892,42.5511]], 'Asia/Riyadh', 'umm'],
+  ['السودان', [['الخرطوم',15.5007,32.5599],['أم درمان',15.6445,32.4777],['بحري',15.6403,32.5310],['بورتسودان',19.6158,37.2164],['ود مدني',14.4012,33.5199],['كسلا',15.4510,36.4000],['الأبيض',13.1843,30.2167],['عطبرة',17.7022,33.9864]], 'Africa/Khartoum', 'egypt'],
+  ['الخليج', [['الدوحة',25.2854,51.5310,'Asia/Qatar'],['دبي',25.2048,55.2708,'Asia/Dubai'],['أبوظبي',24.4539,54.3773,'Asia/Dubai'],['الكويت',29.3759,47.9774,'Asia/Kuwait'],['المنامة',26.2285,50.5860,'Asia/Bahrain'],['مسقط',23.5880,58.3829,'Asia/Muscat']], null, 'umm'],
+  ['مصر', [['القاهرة',30.0444,31.2357],['الإسكندرية',31.2001,29.9187]], 'Africa/Cairo', 'egypt'],
+];
+const PNAMES = { fajr: 'الفجر', sunrise: 'الشروق', dhuhr: 'الظهر', asr: 'العصر', maghrib: 'المغرب', isha: 'العشاء' };
+const DEV_TZ = (() => { try { return Intl.DateTimeFormat().resolvedOptions().timeZone || 'Asia/Riyadh'; } catch (e) { return 'Asia/Riyadh'; } })();
+function defLoc(){
+  const sd = DEV_TZ === 'Africa/Khartoum';
+  return sd ? { name: 'الخرطوم', lat: 15.5007, lng: 32.5599, tz: 'Africa/Khartoum', m: 'egypt' } : { name: 'الرياض', lat: 24.7136, lng: 46.6753, tz: 'Asia/Riyadh', m: 'umm' };
+}
+const loc = () => ST.loc && isFinite(ST.loc.lat) ? ST.loc : defLoc();
+const safeTZ = tz => { try { new Intl.DateTimeFormat('en', { timeZone: tz }); return tz; } catch (e) { return undefined; } };
+function ymdIn(tz, date){
+  const p = {}; new Intl.DateTimeFormat('en-CA', { timeZone: safeTZ(tz), year: 'numeric', month: 'numeric', day: 'numeric' }).formatToParts(date).forEach(x => p[x.type] = +x.value);
+  return [p.year, p.month, p.day];
+}
+function hijri(date, tz, opt){
+  try { return new Intl.DateTimeFormat('ar-SA-u-ca-islamic-umalqura-nu-arab', Object.assign({ timeZone: safeTZ(tz) }, opt)).format(date); } catch (e) { return ''; }
+}
+function isRamadan(date, tz){
+  try { return new Intl.DateTimeFormat('en-u-ca-islamic-umalqura', { month: 'numeric', timeZone: safeTZ(tz) }).format(date) === '9'; } catch (e) { return false; }
+}
+const fmtT = (d, tz) => d ? new Intl.DateTimeFormat('ar-SA-u-nu-arab', { hour: 'numeric', minute: '2-digit', timeZone: safeTZ(tz) }).format(d) : '—';
+function prayerDay(offset){
+  const L = loc(), base = new Date(Date.now() + offset * 864e5), [y, m, d] = ymdIn(L.tz, base);
+  return PT.day(y, m, d, L.lat, L.lng, L.m, L.m === 'umm' && isRamadan(base, L.tz));
+}
+function nextPrayer(){
+  const now = Date.now(), t = prayerDay(0);
+  for (const k of ['fajr', 'dhuhr', 'asr', 'maghrib', 'isha']) if (t[k] && t[k] > now) return { k, at: t[k], today: t };
+  return { k: 'fajr', at: prayerDay(1).fajr, today: t };
+}
+function leftTxt(ms){
+  const m = Math.max(0, Math.ceil(ms / 60000)), h = Math.floor(m / 60), r = m % 60;
+  return 'بعد ' + (h ? AR(h) + ' س ' : '') + AR(r) + ' د';
+}
+function npBanner(){
+  try {
+    const n = nextPrayer(), L = loc();
+    return `<button class="np" data-go="salah" id="np"><span class="ic">${ICON.mosque}</span><span class="tx2"><small>الصلاة القادمة في ${esc(L.name)}</small><b>${PNAMES[n.k]} ${fmtT(n.at, L.tz)}</b></span><span class="left">${leftTxt(n.at - Date.now())}</span></button>`;
+  } catch (e) { return ''; }
+}
+function salah(){
+  setBar('مواقيت الصلاة', true);
+  const L = loc(), n = nextPrayer(), t = n.today, now = Date.now(), M = PT.METHODS[L.m] || PT.METHODS.umm;
+  const greg = new Intl.DateTimeFormat('ar-SA-u-ca-gregory-nu-arab', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: safeTZ(L.tz) }).format(new Date());
+  view.innerHTML = `<div class="pr-head">
+      <button class="city" data-act="loc">${ICON.pinloc} ${esc(L.name)}</button>
+      ${ST.loc ? '' : `<div class="pr-ask"><button class="chip" data-act="loc">${ICON.pinloc} حدّد موقعك أو مدينتك</button></div>`}
+      <div class="dates">${hijri(new Date(), L.tz, { day: 'numeric', month: 'long', year: 'numeric' })}<br>${greg}</div></div>
+    <div class="pr-next"><small>الصلاة القادمة</small><b>${PNAMES[n.k]}</b><div class="tt">${fmtT(n.at, L.tz)}</div><div class="cd" id="cd">${leftTxt(n.at - now)}</div></div>
+    <div class="pr-list">${Object.keys(PNAMES).map(k => `<div class="pr-row${k === 'sunrise' ? ' sr' : ''}${n.k === k && n.at === t[k] ? ' nx' : ''}${t[k] && t[k] < now && !(n.k === k && n.at === t[k]) ? ' past' : ''}"><span class="nm">${PNAMES[k]}</span><span class="tm">${fmtT(t[k], L.tz)}</span></div>`).join('')}</div>
+    <div class="pr-meta"><button class="chip" data-act="loc">طريقة الحساب: ${esc(M.n)}${L.m === 'umm' ? (isRamadan(new Date(), L.tz) ? ' (رمضان: العشاء بعد المغرب بساعتين)' : '') : ''}</button></div>
+    <div class="pr-links">${[['أذكار الأذان','عند سماع المؤذن'],['الأذكار بعد السلام من الصلاة','دبر كل صلاة'],['أذكار الصباح والمساء','بعد الفجر وبعد العصر'],['أذكار المسجد','الدخول والخروج']].map(([tt, sb]) => { const s = DATA.find(x => x.title === tt); return s ? `<button class="qt" data-go="${s.id}"><b>${esc(shortName(s))}</b><span>${sb}</span></button>` : ''; }).join('')}</div>
+    <p class="pr-note">المواقيت تُحسب فلكيًّا على جهازك دون إنترنت، وقد تختلف دقيقة أو دقيقتين عن تقويم بلدك الرسمي؛ فاحتط للفجر والمغرب.</p>`;
+  window.scrollTo(0, 0);
+}
+function locSheet(){
+  const L = loc(), sh = $('#sheet');
+  let h = `<div class="pane" role="dialog" aria-label="الموقع وطريقة الحساب"><h3>الموقع وطريقة الحساب</h3>
+    <button class="geo" data-act="geo">${ICON.pinloc} استخدم موقعي الحالي</button><div class="geost" id="geost" hidden></div><div class="loc-g" style="padding:0">أو اختر مدينتك:</div><div class="pk">`;
+  CITIES.forEach(([g, list, tz, m], gi) => {
+    h += `<div class="loc-g">${g}</div><div class="loc-l">` + list.map((c, ci) => `<button class="chip${L.name === c[0] ? ' on' : ''}" data-city="${gi}:${ci}">${c[0]}</button>`).join('') + '</div>';
+  });
+  h += `</div><div class="opt"><label for="meth">طريقة الحساب</label></div><select class="meth" id="meth">${Object.entries(PT.METHODS).map(([k, v]) => `<option value="${k}"${k === L.m ? ' selected' : ''}>${v.n}</option>`).join('')}</select>
+    <button class="chip on" data-act="close" style="align-self:center">تمّ</button></div>`;
+  sh.innerHTML = h; sh.hidden = false;
+}
+function setLoc(o){ ST.loc = Object.assign({}, loc(), o); save(); if (location.hash === '#salah') salah(); }
+setInterval(() => {
+  if (document.hidden) return;
+  if (location.hash === '#salah' && $('#cd')) { const n = nextPrayer(); if (n.at - Date.now() <= 0 || $('#cd').dataset.k && $('#cd').dataset.k !== n.k) salah(); else $('#cd').textContent = leftTxt(n.at - Date.now()); $('#cd').dataset.k = n.k; }
+  const b = $('#np'); if (b) b.outerHTML = npBanner();
+}, 20000);
+
+/* locate the user, explaining clearly what to do when location is off or blocked */
+function geoMsg(html, busy){ const b = $('#geost'); if (!b) { toast(html.replace(/<[^>]+>/g, '')); return; } b.hidden = false; b.className = 'geost' + (busy ? ' busy' : ''); b.innerHTML = html; }
+const GEO_HELP = {
+  insecure: 'تحديد الموقع يعمل فقط عند فتح التطبيق من رابطه على الإنترنت (https). اختر مدينتك من القائمة.',
+  frame: 'تحديد الموقع غير متاح في هذه المعاينة. افتح التطبيق من رابطه أو بعد تثبيته، أو اختر مدينتك من القائمة.',
+  denied: '<b>إذن الموقع مرفوض لهذا التطبيق.</b><br>لتفعيله في Chrome: اضغط القفل 🔒 بجانب الرابط (أو ⋮ ← الإعدادات ← إعدادات المواقع ← الموقع)، واسمح بالموقع لهذا الموقع، ثم اضغط «حاول مرة أخرى».',
+  off: '<b>يبدو أن خدمة الموقع (GPS) مقفولة في جوالك.</b><br>اسحب الشريط العلوي للجوال وفعّل «الموقع»، ثم اضغط «حاول مرة أخرى».',
+};
+function locate(){
+  if (!window.isSecureContext) return geoMsg(GEO_HELP.insecure);
+  if (!navigator.geolocation) return geoMsg(GEO_HELP.insecure);
+  let inFrame = false; try { inFrame = window.self !== window.top; } catch (e) { inFrame = true; }
+  const retry = ' <button class="chip" data-act="geo">حاول مرة أخرى</button>';
+  const ok = p => {
+    const g = DEV_TZ === 'Africa/Khartoum' || DEV_TZ === 'Africa/Cairo' ? 'egypt' : /^Asia\/(Riyadh|Qatar|Kuwait|Bahrain|Aden)$/.test(DEV_TZ) ? 'umm' : 'mwl';
+    setLoc({ name: 'موقعي الحالي', lat: +p.coords.latitude.toFixed(4), lng: +p.coords.longitude.toFixed(4), tz: DEV_TZ, m: g });
+    $('#sheet').hidden = true; if (!location.hash) home(); toast('حُدّد موقعك');
+  };
+  const fail = (err, second) => {
+    if (err.code === 1) return geoMsg((inFrame ? GEO_HELP.frame : GEO_HELP.denied) + retry);
+    if (!second) return navigator.geolocation.getCurrentPosition(ok, e => fail(e, true), { enableHighAccuracy: true, timeout: 20000, maximumAge: 0 });
+    geoMsg(GEO_HELP.off + retry);
+  };
+  const go = () => { geoMsg('جارٍ تحديد موقعك…', true); navigator.geolocation.getCurrentPosition(ok, e => fail(e, false), { enableHighAccuracy: false, timeout: 10000, maximumAge: 6e5 }); };
+  if (navigator.permissions && navigator.permissions.query) {
+    navigator.permissions.query({ name: 'geolocation' }).then(r => r.state === 'denied' ? geoMsg((inFrame ? GEO_HELP.frame : GEO_HELP.denied) + retry) : go(), go);
+  } else go();
+}
 
 /* ---------- settings ---------- */
 function settings(){
@@ -473,7 +712,7 @@ function setBar(t, back){ $('#ttl').textContent = t; $('#back').hidden = !back; 
 function route(){
   const h = location.hash.slice(1);
   view.dataset.sec = '';
-  if (!h) home(); else if (h === 'fav') favs(); else if (h === 'search') search(); else if (h === 'tasbih') tasbih();
+  if (!h) home(); else if (h === 'fav') favs(); else if (h === 'search') search(); else if (h === 'tasbih') tasbih(); else if (h === 'salah') salah();
   else if (BY[h]) chapter(h); else home();
 }
 function go(t){ ARR = false; if (location.hash.slice(1) === t) route(); else location.hash = t; }
@@ -524,6 +763,8 @@ document.addEventListener('click', e => {
     if (act === 'reset-ch') { counted(BY[view.dataset.sec]).forEach(i => delete ST.done[i.n]); save(); chapter(view.dataset.sec); }
     else if (act === 'tsb-reset') { ST.tsb.n = 0; save(); tasbih(); }
     else if (act === 'pick') picker();
+    else if (act === 'loc') locSheet();
+    else if (act === 'geo') locate();
     else if (act === 'arr') { ARR = true; home(); }
     else if (act === 'arr-done') { ARR = false; home(); toast('حُفظ الترتيب'); }
     else if (act === 'unpin') { togglePin(a.dataset.id); home(); }
@@ -543,14 +784,27 @@ document.addEventListener('click', e => {
     else if (act === 'no-reset') settings();
     return;
   }
-  if (e.target.closest('#bead')) { ST.tsb.n++; buzz(10); if (ST.tsb.goal && ST.tsb.n === ST.tsb.goal) { buzz([30, 50, 30]); toast('أتممت ' + AR(ST.tsb.goal)); } save(); tasbih(); return; }
+  if (e.target.closest('#bead')) {
+    const A = tsbAlert(); ST.tsb.n++; if (A.vib) buzz(10); unlockAudio();
+    const hit = ST.tsb.goal && ST.tsb.n % ST.tsb.goal === 0;
+    if (hit) { if (A.vib) buzz([60, 80, 60, 80, 160]); if (A.snd) chime(); toast('أتممت ' + AR(ST.tsb.goal) + (ST.tsb.n > ST.tsb.goal ? ' (المجموع ' + AR(ST.tsb.n) + ')' : '')); }
+    save(); tasbih(); if (hit) { const r = document.querySelector('.bead'); r && r.classList.add('fin'); }
+    return;
+  }
+  const al = e.target.closest('[data-alert]');
+  if (al) { const k = al.dataset.alert, A = tsbAlert(); ST.tsb.alert = Object.assign({ vib: A.vib, snd: A.snd }, { [k]: !A[k] }); save(); tasbih(); if (k === 'snd' && ST.tsb.alert.snd) chime(); if (k === 'vib' && ST.tsb.alert.vib) buzz([60, 80, 60]); return; }
+  const ad = e.target.closest('[data-adddh]');
+  if (ad) { const t = cleanDhikr(ITEMS[+ad.dataset.adddh].x); ST.tsb.custom = (ST.tsb.custom || []).concat(t); ST.tsb.i = allPhr().length - 1; ST.tsb.n = 0; save(); tasbih(); window.scrollTo(0, 0); toast('أُضيف إلى السُّبحة'); return; }
   const ph = e.target.closest('[data-ph]'); if (ph) { ST.tsb.i = +ph.dataset.ph; ST.tsb.n = 0; save(); tasbih(); return; }
   const gl = e.target.closest('[data-goal]'); if (gl) { ST.tsb.goal = +gl.dataset.goal; save(); tasbih(); return; }
+  const ct = e.target.closest('[data-city]');
+  if (ct) { const [gi, ci] = ct.dataset.city.split(':').map(Number), G = CITIES[gi], c = G[1][ci]; setLoc({ name: c[0], lat: c[1], lng: c[2], tz: c[3] || G[2], m: G[3] }); $('#sheet').hidden = true; if (!location.hash) home(); toast('المواقيت الآن حسب ' + c[0]); return; }
   const f = e.target.closest('[data-fs]'); if (f) { ST.fs = Math.min(2.4, Math.max(1.1, +(ST.fs + (f.dataset.fs === '+' ? .15 : -.15)).toFixed(2))); save(); applyPrefs(); return; }
   const th = e.target.closest('[data-th]'); if (th) { ST.theme = th.dataset.th; save(); applyPrefs(); settings(); return; }
   if (e.target.id === 'sheet') { $('#sheet').hidden = true; if (!location.hash) home(); }
 });
 document.addEventListener('change', e => {
+  if (e.target.id === 'meth') { setLoc({ m: e.target.value }); return; }
   const c = e.target.closest('[data-pin]'); if (!c) return;
   const p = pins(), id = c.dataset.pin, i = p.indexOf(id);
   if (c.checked && i < 0) p.push(id); if (!c.checked && i >= 0) p.splice(i, 1);
