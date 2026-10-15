@@ -791,7 +791,7 @@ function locate(){
 /* ---------- what's new (shown once after each update) ---------- */
 const WN = {
   v: '1.3',
-  title: 'الجديد في الإصدار ١٫٣',
+  title: 'الجديد في الإصدار <bdi dir="ltr">1.3</bdi>',
   groups: [
     ['🤲 أدعية نبوية جديدة', [
       ['«اللهم إني أسألك الثبات في الأمر والعزيمة على الرشد…»', 'من جوامع دعاء النبي ﷺ'],
@@ -816,7 +816,7 @@ const WN = {
 };
 function whatsNew(){
   const sh = $('#sheet');
-  sh.innerHTML = `<div class="pane wn" role="dialog" aria-label="${WN.title}">
+  sh.innerHTML = `<div class="pane wn" role="dialog" aria-label="ما الجديد">
     <div class="wn-head">${document.querySelector('.hero .logo') ? document.querySelector('.hero .logo').outerHTML : ''}<h3>${WN.title}</h3></div>
     <div class="pk wn-list">${WN.groups.map(([g, list]) => `<div class="wn-g">${g}</div>` + list.map(([t, sec]) => {
       const s = DATA.find(x => x.title === sec);
@@ -840,7 +840,7 @@ function settings(){
     ${(ST.hidSec || []).length ? `<div class="opt"><label>الأقسام المخفية من القائمة: ${AR(ST.hidSec.length)}</label><button class="chip" data-act="unhide-secs">إظهارها كلها</button></div>` : ''}
     ${(ST.hidden || []).length ? `<div class="opt"><label>الأذكار المخفية: ${AR(ST.hidden.length)}</label><button class="chip" data-act="unhide-every">إظهارها كلها</button></div>` : ''}
     <div id="rz"><button class="danger" data-act="ask-reset">تصفير عدّادات اليوم</button></div>
-    <div class="ver">الإصدار ١٫٣ · بناء ٤٢ · <button class="linkbtn" data-act="whatsnew">ما الجديد؟</button></div><div class="install"><b>تثبيته على الجوال:</b> افتح هذه الصفحة في متصفح Chrome، ثم من القائمة ⋮ اختر «إضافة إلى الشاشة الرئيسية»، فيظهر بأيقونة كالتطبيق. يُحفظ تقدّمك ومفضّلتك على هذا الجهاز، وتُصفَّر العدّادات تلقائيًا كل يوم.</div>
+    <div class="ver">الإصدار <bdi dir="ltr">1.3</bdi> · بناء ٤٣ · <button class="linkbtn" data-act="whatsnew">ما الجديد؟</button></div><div class="install"><b>تثبيته على الجوال:</b> افتح هذه الصفحة في متصفح Chrome، ثم من القائمة ⋮ اختر «إضافة إلى الشاشة الرئيسية»، فيظهر بأيقونة كالتطبيق. يُحفظ تقدّمك ومفضّلتك على هذا الجهاز، وتُصفَّر العدّادات تلقائيًا كل يوم.</div>
     <button class="chip" data-act="close" style="align-self:center">إغلاق</button></div>`;
   sh.hidden = false;
 }
