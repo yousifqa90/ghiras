@@ -319,8 +319,8 @@ main{max-width:40rem;margin:0 auto;padding-inline:16px;padding-block:1rem 5rem}
 .sl-ring .in{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1}
 .sl-ring .in b{font-size:1.8rem;font-weight:600;font-variant-numeric:tabular-nums}
 .sl-ring .in small{font-size:.8rem;color:var(--muted)}
-.sl-hero .msg b{display:block;font-family:var(--f-text);font-size:1.35rem;color:var(--green)}
-.sl-hero .msg span{font-size:.9rem;color:var(--muted);line-height:1.7}
+.sl-hero .msg .hd{display:block;font-family:var(--f-text);font-size:1.35rem;color:var(--green)}
+
 .sl-h{display:flex;align-items:baseline;justify-content:space-between;margin:1.3rem 0 .55rem}
 .sl-h h2{margin:0;font-family:var(--f-text);font-size:1.25rem;color:var(--red)}
 .sl-h small{color:var(--gold);font-size:.8rem}
@@ -347,7 +347,20 @@ main{max-width:40rem;margin:0 auto;padding-inline:16px;padding-block:1rem 5rem}
 .sl-d .cl i{display:block;width:18px;height:8px;border-radius:3px;background:var(--line)}
 .sl-d .cl i.on{background:var(--green)}
 .sl-note{color:var(--muted);font-size:.8rem;text-align:center;line-height:1.8;margin:1rem .5rem 0}
+.inst-st{list-style:arabic-indic;margin:.4rem 0 .3rem;padding-inline-start:1.3rem;display:flex;flex-direction:column;gap:.2rem}
+.inst-n{display:block;font-size:.8rem;margin-bottom:.2rem}
+.install .iosh{vertical-align:-3px;color:var(--ink)}
 .pr-sl{display:flex;justify-content:center;margin-top:.8rem}
+.sl-ring{width:124px;height:124px}
+.sl-ring .in svg.ck{width:30px;height:30px;transform:none;color:var(--green)}
+.sl-ring .in .fn{font-size:1.6rem;font-weight:600;color:var(--green);font-variant-numeric:tabular-nums}
+.sl-hero .msg{flex:1;min-width:0;display:flex;flex-direction:column;gap:.45rem}
+.sl-leg{display:flex;align-items:center;gap:.5rem;font-size:.95rem}
+.sl-leg i{width:12px;height:12px;border-radius:50%;flex:none}
+.sl-leg span{flex:1;color:var(--ink)}
+.sl-leg.f i{background:var(--green)} .sl-leg.f b{color:var(--green)}
+.sl-leg.s i{background:var(--gold)} .sl-leg.s b{color:var(--gold)}
+
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
 
@@ -522,7 +535,7 @@ function home(){
   });
   h += `<button class="qt" data-go="fav"><b>المفضّلة</b><span>${AR(ST.fav.length)} ذكرًا محفوظًا</span></button>
         <button class="qt" data-go="tasbih"><b>السُّبحة</b><span>عدّاد للتسبيح المطلق</span></button>
-        ${(() => { const S = slState(), c = slCount(S); return `<button class="qt${pins().filter(id => BY[id]).length % 2 ? '' : ' wide'}" data-go="salati"><b>صلاتي اليوم</b><span>الفرائض والسنن</span><span>${AR(c)} من ${AR(SL_TOTAL)} اليوم</span><div class="pg"><i style="width:${c / SL_TOTAL * 100}%"></i></div></button>`; })()}</div>
+        ${(() => { const S = slState(), c = slCount(S), fc = SL_F.filter(x => S.k[x]).length; return `<button class="qt${pins().filter(id => BY[id]).length % 2 ? '' : ' wide'}" data-go="salati"><b>صلاتي اليوم</b><span>الفرائض ${AR(fc)} من ٥</span><span>السنن ${AR(c - fc)} من ٧</span><div class="pg"><i style="width:${fc / 5 * 100}%"></i></div></button>`; })()}</div>
         <div class="pinbar">${ARR ? `<button class="pinlink done" data-act="arr-done">تمّ الترتيب</button>`
           : `<button class="pinlink" data-act="pick">${ICON.edit} اختر الأقسام</button><button class="pinlink" data-act="arr">⇅ رتّبها</button>`}</div>`;
   let open = false, seenPart = false;
@@ -1022,7 +1035,7 @@ function settings(){
     ${(ST.hidden || []).length ? `<div class="opt"><label>الأذكار المخفية: ${AR(ST.hidden.length)}</label><button class="chip" data-act="unhide-every">إظهارها كلها</button></div>` : ''}
     <div class="opt"><label>انفع غيرك بالتطبيق</label><button class="chip on" data-act="share-app">شارك التطبيق</button></div>
     <div id="rz"><button class="danger" data-act="ask-reset">تصفير عدّادات اليوم</button></div>
-    <div class="ver">الإصدار <bdi dir="ltr">1.5</bdi> · بناء ٥٢ · <button class="linkbtn" data-act="whatsnew">ما الجديد؟</button></div><div class="install"><b>تثبيته على الجوال:</b> افتح هذه الصفحة في متصفح Chrome، ثم من القائمة ⋮ اختر «إضافة إلى الشاشة الرئيسية»، فيظهر بأيقونة كالتطبيق. يُحفظ تقدّمك ومفضّلتك على هذا الجهاز، وتُصفَّر العدّادات تلقائيًا كل يوم.</div>
+    <div class="ver">الإصدار <bdi dir="ltr">1.5</bdi> · بناء ٥٢ · <button class="linkbtn" data-act="whatsnew">ما الجديد؟</button></div><div class="install" id="inst" data-os="${installOS()}">${installHelp()}</div>
     <button class="chip" data-act="close" style="align-self:center">إغلاق</button></div>`;
   sh.hidden = false;
 }
@@ -1064,11 +1077,18 @@ function salati(keep){
     const nm = i ? new Intl.DateTimeFormat('ar', { weekday: 'long', timeZone: 'UTC' }).format(dt).replace('يوم ', '') : 'اليوم';
     return `<div class="sl-d${i ? '' : ' now'}"><span class="cl">${[0, 1, 2, 3, 4].map(j => `<i${j < v ? ' class="on"' : ''}></i>`).join('')}</span><span>${nm}</span></div>`;
   }).join('');
-  const done = n === SL_TOTAL;
+  const sN = n - fN, fFull = fN === SL_F.length, all = n === SL_TOTAL, SUN = SL_TOTAL - SL_F.length;
+  const head = all ? 'تمّ وردك اليوم' : fFull ? 'أتممت فرائض اليوم' : 'بارك الله فيك';
   view.innerHTML = `<div class="sl-hero">
-      <div class="sl-ring"><svg viewBox="0 0 120 120" role="img" aria-label="أدّيت ${AR(n)} من ${AR(SL_TOTAL)}"><circle cx="60" cy="60" r="52" fill="none" stroke="var(--line)" stroke-width="10"/><circle cx="60" cy="60" r="52" fill="none" stroke="var(--green)" stroke-width="10" stroke-linecap="round" stroke-dasharray="${(n / SL_TOTAL * 326.7).toFixed(1)} 327"/></svg>
-        <div class="in"><b>${AR(n)}</b><small>من ${AR(SL_TOTAL)}</small></div></div>
-      <div class="msg"><b>${done ? 'تمّ وردك اليوم' : 'بارك الله فيك'}</b><span>${done ? 'أتممت الفرائض والسنن كلها.' : `أدّيت ${AR(fN)} من الفرائض و${AR(rest)} من السنن.`}</span></div></div>
+      <div class="sl-ring"><svg viewBox="0 0 124 124" role="img" aria-label="الفرائض ${AR(fN)} من ${AR(SL_F.length)}، والسنن ${AR(sN)} من ${AR(SUN)}">
+        <circle cx="62" cy="62" r="54" fill="none" stroke="var(--line)" stroke-width="11"/>
+        <circle class="rf" cx="62" cy="62" r="54" fill="none" stroke="var(--green)" stroke-width="11" stroke-linecap="${fN ? 'round' : 'butt'}" stroke-dasharray="${(fN / SL_F.length * 339.3).toFixed(1)} 340"/>
+        <circle cx="62" cy="62" r="38" fill="none" stroke="var(--line)" stroke-width="10" opacity=".7"/>
+        <circle class="rs" cx="62" cy="62" r="38" fill="none" stroke="var(--gold)" stroke-width="10" stroke-linecap="${sN ? 'round' : 'butt'}" stroke-dasharray="${(sN / SUN * 238.8).toFixed(1)} 239"/></svg>
+        <div class="in">${fFull ? ICON.slck.replace('<svg ', '<svg class="ck" ') : `<b class="fn">${AR(fN)}</b>`}</div></div>
+      <div class="msg"><b class="hd">${head}</b>
+        <div class="sl-leg f"><i></i><span>الفرائض</span><b>${AR(fN)} من ${AR(SL_F.length)}</b></div>
+        <div class="sl-leg s"><i></i><span>السنن</span><b>${AR(sN)} من ${AR(SUN)}</b></div></div></div>
     <div class="sl-h"><h2>الفرائض</h2></div>
     <div class="sl-fard">${SL_F.map(k => `<button class="sl-f${S.k[k] ? ' on' : ''}" data-act="sl" data-k="${k}" aria-pressed="${!!S.k[k]}" aria-label="صلاة ${PNAMES[k]}"><span class="dot">${S.k[k] ? ck : ''}</span>${PNAMES[k]}</button>`).join('')}</div>
     <div class="sl-h"><h2>السنن الرواتب</h2><small>١٢ ركعة في اليوم</small></div>
@@ -1080,6 +1100,19 @@ function salati(keep){
     <div class="sl-wk">${wk}</div>
     <p class="sl-note">يبدأ يومك هنا من أذان الفجر، فوتر الليل يُحسب ليومه.<br>سجلّك محفوظ على جهازك فقط، ولا يراه أحد.</p>`;
   if (!keep) window.scrollTo(0, 0);
+}
+/* ---------- install help: steps for the device in hand ---------- */
+const IOS_SHARE = '<svg class="iosh" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-label="زر المشاركة"><path d="M12 3v12M8 7l4-4 4 4"/><path d="M6 11H5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-1"/></svg>';
+const isInstalled = () => { try { return matchMedia('(display-mode: standalone)').matches || navigator.standalone === true; } catch (e) { return false; } };
+const installOS = () => isInstalled() ? 'installed' : IOS ? 'ios' : /Android/i.test(navigator.userAgent) ? 'android' : 'desktop';
+function installHelp(){
+  const keep = ' يُحفظ تقدّمك ومفضّلتك على هذا الجهاز، وتُصفَّر العدّادات تلقائيًا كل يوم.';
+  switch (installOS()) {
+    case 'installed': return `<b>التطبيق مثبّت على جهازك ✓</b>${keep}`;
+    case 'ios': return `<b>تثبيته على آيفون وآيباد:</b><ol class="inst-st"><li>افتح هذه الصفحة في <b>Safari</b>.</li><li>اضغط زر المشاركة ${IOS_SHARE} أسفل الشاشة (وفي آيباد أعلاها).</li><li>مرّر للأسفل واختر <b>«إضافة إلى الشاشة الرئيسية»</b>، ثم <b>«إضافة»</b>.</li></ol><span class="inst-n">في Chrome على آيفون: زر المشاركة ${IOS_SHARE} في شريط العنوان، ثم «إضافة إلى الشاشة الرئيسية».</span>${keep}`;
+    case 'android': return `<b>تثبيته على أندرويد:</b><ol class="inst-st"><li>افتح هذه الصفحة في <b>Chrome</b>.</li><li>اضغط القائمة <b>⋮</b> أعلى الشاشة.</li><li>اختر <b>«تثبيت التطبيق»</b> أو <b>«إضافة إلى الشاشة الرئيسية»</b>.</li></ol>${keep}`;
+    default: return `<b>تثبيته على الكمبيوتر:</b> في Chrome أو Edge اضغط أيقونة التثبيت في شريط العنوان. وعلى الجوال افتح الإعدادات من جوالك لتظهر لك خطوات جهازك.${keep}`;
+  }
 }
 function setBar(t, back){ $('#ttl').textContent = t; $('#back').hidden = !back; }
 const ALIAS = { morning: 'أذكار الصباح والمساء', after: 'الأذكار بعد السلام من الصلاة', sleep: 'أذكار النوم', duas: 'من جوامع دعاء النبي ﷺ' };
