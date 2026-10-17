@@ -350,6 +350,20 @@ main{max-width:40rem;margin:0 auto;padding-inline:16px;padding-block:1rem 5rem}
 .inst-st{list-style:arabic-indic;margin:.4rem 0 .3rem;padding-inline-start:1.3rem;display:flex;flex-direction:column;gap:.2rem}
 .inst-n{display:block;font-size:.8rem;margin-bottom:.2rem}
 .install .iosh{vertical-align:-3px;color:var(--ink)}
+.sl-f.lk,.sl-r.lk{cursor:not-allowed}
+.sl-f.lk .dot{border-style:dashed;background:transparent;opacity:.55}
+.sl-f.lk{color:var(--muted)}
+.sl-f .lt{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;margin-top:-.2rem}
+.sl-r.lk .nm{color:var(--muted)}
+.sl-r.lk .bx{border-style:dashed;opacity:.55}
+.sl-r.lk small{color:var(--muted)}
+.sl-r .nm .lt{display:block;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;line-height:1.3}
+.sl-f.nx{color:var(--green);font-weight:600}
+.sl-f.nx .dot{border-style:solid;border-color:var(--green);opacity:1}
+.sl-f.nx .lt{color:var(--green)}
+.sl-nx{color:var(--green)!important;font-weight:600;font-size:.85rem!important}
+.sl-loc{display:flex;align-items:center;gap:.4rem;margin:.8rem auto 0;color:var(--green);border-color:color-mix(in srgb,var(--green) 45%,transparent);min-height:44px}
+.sl-loc svg{width:16px;height:16px}
 .pr-sl{display:flex;justify-content:center;margin-top:.8rem}
 .sl-ring{width:124px;height:124px}
 .sl-ring .in svg.ck{width:30px;height:30px;transform:none;color:var(--green)}
@@ -816,7 +830,7 @@ function locSheet(){
     <button class="chip on" data-act="close" style="align-self:center">تمّ</button></div>`;
   sh.innerHTML = h; sh.hidden = false;
 }
-function setLoc(o){ ST.loc = Object.assign({}, loc(), o); save(); if (location.hash === '#salah') salah(); }
+function setLoc(o){ ST.loc = Object.assign({}, loc(), o); save(); if (location.hash === '#salah') salah(); else if (location.hash === '#salati') salati(true); }
 /* one ticker: live countdown, pre-adhan chime, and "it is time" chime */
 let _fired = {};
 function preAlert(msg, twice){
@@ -1065,11 +1079,37 @@ function slState(){
   return S;
 }
 const slCount = S => Object.keys(S.k).filter(x => S.k[x]).length;
+/* when each item opens: fard and their rawatib with their prayer, duha after sunrise (+15 min), witr after isha */
+const SL_AT = { fajr: 'fajr', fb: 'fajr', dhuhr: 'dhuhr', db: 'dhuhr', da: 'dhuhr', asr: 'asr', maghrib: 'maghrib', ma: 'maghrib', isha: 'isha', ia: 'isha', wi: 'isha', du: 'sunrise' };
+function slTimes(S){
+  /* prayer times of the day the log belongs to: today, or yesterday when it is still before fajr */
+  const L = loc(), [y, m, d] = ymdIn(L.tz, new Date());
+  const today = y + '-' + pad2(m) + '-' + pad2(d);
+  try { return prayerDay(S.d === today ? 0 : -1); } catch (e) { return {}; }
+}
+const SL_REL = { fb: 'مع أذان الفجر', db: 'مع أذان الظهر', da: 'بعد صلاة الظهر', ma: 'بعد صلاة المغرب', ia: 'بعد صلاة العشاء', wi: 'بعد صلاة العشاء', du: 'بعد الشروق بربع ساعة' };
+const SL_GRACE = 5 * 6e4;                             /* calculated times can differ a minute or two from the official calendar */
+function slOpenAt(k, T){
+  const t = T[SL_AT[k]];
+  if (!t) return 0;                                   /* no time (far north etc.): never lock */
+  return SL_AT[k] === 'sunrise' ? +t + 15 * 6e4 : +t - SL_GRACE;
+}
 function salati(keep){
   setBar('صلاتي اليوم', true);
   const S = slState(), n = slCount(S), fN = SL_F.filter(x => S.k[x]).length, rest = n - fN;
-  const ck = ICON.slck;
-  const row = ([k, nm, sub]) => `<button class="sl-r${S.k[k] ? ' on' : ''}" data-act="sl" data-k="${k}" aria-pressed="${!!S.k[k]}"><span class="bx">${S.k[k] ? ck : ''}</span><span class="nm">${nm}</span><small>${sub}</small></button>`;
+  const ck = ICON.slck, T = slTimes(S), now = Date.now(), L = loc(), hasLoc = !!(ST.loc && isFinite(ST.loc.lat));
+  const at = k => slOpenAt(k, T);
+  const adhan = k => T[SL_AT[k]] ? fmtT(new Date(k === 'du' ? at(k) : +T[SL_AT[k]]), L.tz) : '';
+  const locked = k => hasLoc && at(k) > now && !S.k[k];
+  const lockTxt = k => SL_REL[k] || ('يدخل وقتها ' + adhan(k));
+  const why = k => SL_F.includes(k) ? `يدخل وقت ${PNAMES[k]} ${adhan(k)}` : `تبدأ ${SL_REL[k]}، ${adhan(k)}`;
+  const nextF = SL_F.filter(locked).sort((x, y) => at(x) - at(y))[0];
+  const nxLine = nextF ? `${PNAMES[nextF]} ${leftTxt(+T[SL_AT[nextF]] - now)}` : '';
+  /* while the page stays open: refresh each minute (time left) and when the next item opens */
+  clearTimeout(salati.t);
+  const nxt = Object.keys(SL_AT).filter(locked).map(at).sort((x, y) => x - y)[0];
+  if (nxt) salati.t = setTimeout(() => { if (location.hash === '#salati') salati(true); }, Math.min(nxt - now + 500, 6e4));
+  const row = ([k, nm, sub]) => `<button class="sl-r${S.k[k] ? ' on' : ''}${locked(k) ? ' lk' : ''}" data-act="sl" data-k="${k}" aria-pressed="${!!S.k[k]}"${locked(k) ? ` aria-disabled="true" data-why="${why(k)}" aria-label="${nm}، ${lockTxt(k)}"` : ''}><span class="bx">${S.k[k] ? ck : ''}</span><span class="nm">${nm}${locked(k) ? `<small class="lt">${lockTxt(k)}</small>` : ''}</span><small>${sub}</small></button>`;
   const [y, m, d] = S.d.split('-').map(Number), base = Date.UTC(y, m - 1, d, 12);
   const wk = [6, 5, 4, 3, 2, 1, 0].map(i => {
     const dt = new Date(base - i * 864e5), key = dt.toISOString().slice(0, 10);
@@ -1089,8 +1129,9 @@ function salati(keep){
       <div class="msg"><b class="hd">${head}</b>
         <div class="sl-leg f"><i></i><span>الفرائض</span><b>${AR(fN)} من ${AR(SL_F.length)}</b></div>
         <div class="sl-leg s"><i></i><span>السنن</span><b>${AR(sN)} من ${AR(SUN)}</b></div></div></div>
-    <div class="sl-h"><h2>الفرائض</h2></div>
-    <div class="sl-fard">${SL_F.map(k => `<button class="sl-f${S.k[k] ? ' on' : ''}" data-act="sl" data-k="${k}" aria-pressed="${!!S.k[k]}" aria-label="صلاة ${PNAMES[k]}"><span class="dot">${S.k[k] ? ck : ''}</span>${PNAMES[k]}</button>`).join('')}</div>
+    ${hasLoc ? '' : `<button class="chip sl-loc" data-act="loc">${ICON.pinloc} حدّد مدينتك لتظهر أوقات الصلاة هنا</button>`}
+    <div class="sl-h"><h2>الفرائض</h2>${nxLine ? `<small class="sl-nx">${nxLine}</small>` : ''}</div>
+    <div class="sl-fard">${SL_F.map(k => `<button class="sl-f${S.k[k] ? ' on' : ''}${locked(k) ? ' lk' : ''}${k === nextF ? ' nx' : ''}" data-act="sl" data-k="${k}" aria-pressed="${!!S.k[k]}" aria-label="صلاة ${PNAMES[k]}${locked(k) ? '، ' + lockTxt(k) : ''}"${locked(k) ? ` aria-disabled="true" data-why="${why(k)}"` : ''}><span class="dot">${S.k[k] ? ck : ''}</span>${PNAMES[k]}${locked(k) ? `<small class="lt">${adhan(k)}</small>` : ''}</button>`).join('')}</div>
     <div class="sl-h"><h2>السنن الرواتب</h2><small>١٢ ركعة في اليوم</small></div>
     <p class="sl-had">«مَا مِنْ عَبْدٍ مُسْلِمٍ يُصَلِّي لِلَّهِ كُلَّ يَوْمٍ ثِنْتَيْ عَشْرَةَ رَكْعَةً تَطَوُّعًا غَيْرَ فَرِيضَةٍ، إِلَّا بَنَى اللَّهُ لَهُ بَيْتًا فِي الْجَنَّةِ» <small>رواه مسلم.</small></p>
     <div class="sl-list">${SL_S.map(row).join('')}</div>
@@ -1140,7 +1181,7 @@ document.addEventListener('click', e => {
   if (NOCLICK) { NOCLICK = false; e.preventDefault(); return; }
   const g = e.target.closest('[data-go]'); if (g) { go(g.dataset.go); return; }
   const a = e.target.closest('[data-act]');
-  if (a && a.dataset.act === 'sl') { const S = slState(), k = a.dataset.k; S.k[k] = !S.k[k]; save(); buzz(10); salati(true); return; }
+  if (a && a.dataset.act === 'sl') { if (a.getAttribute('aria-disabled') === 'true') { toast(a.dataset.why); buzz(15); return; } const S = slState(), k = a.dataset.k; S.k[k] = !S.k[k]; save(); buzz(10); salati(true); return; }
   const cardEl = e.target.closest('.card');
   if (a && cardEl) {
     const n = +cardEl.dataset.n, it = ITEMS[n];
